@@ -3,7 +3,7 @@ package utils;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Input {
+public class Helper {
 
     private static Scanner input = new Scanner(System.in);
 
@@ -42,5 +42,13 @@ public class Input {
         }
         return data;
 
+    }
+
+    public static void readPrice(double price) {
+        //comprovar que el preu és un double i no és negatiu...
+    }
+
+    public static void readEmail(String email) {
+        //comprovar que l'email és correcte...
     }
 }
