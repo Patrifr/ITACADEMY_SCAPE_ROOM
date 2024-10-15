@@ -9,7 +9,9 @@ import java.util.ArrayList;
 
 public class InventoryManager {
 
-    private ArrayList<Room> inventoryRooms;
+    //singleton
+
+    /*private ArrayList<Room> inventoryRooms;
     private ArrayList<Clue> inventoryClues;
     private ArrayList<DecorationItem> inventoryDecoItems;
 
@@ -110,6 +112,6 @@ public class InventoryManager {
     public Room findRoom(String name) {
         Room room = this.inventoryRooms.stream().filter(r -> r.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
         return room;
-    }
+    }*/
 
 }

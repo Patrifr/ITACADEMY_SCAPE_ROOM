@@ -1,19 +1,8 @@
 package logic;
 
-import classes.Clue;
-import classes.DecorationItem;
-import classes.Room;
-import enums.Level;
-import exceptions.*;
-import management.InventoryManager;
-import utils.Helper;
-
-import java.util.ArrayList;
-import java.util.Random;
-
 public class Escape {
 
-    private InventoryManager inventory;
+    /*private InventoryManager inventory;
 
     public Escape() {
         this.inventory = new InventoryManager();
@@ -193,6 +182,6 @@ public class Escape {
                 }
                 break;
         }
-    }
+    }*/
 
 }
