@@ -6,7 +6,7 @@ import classes.Room;
 import enums.Level;
 import exceptions.*;
 import management.InventoryManager;
-import utils.Input;
+import utils.Helper;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -52,12 +52,16 @@ public class Escape {
 
     private int menu() {
         int option = 0;
-        option = Input.readInt("Choose the action:\n"
+        option = Helper.readInt("Choose the action:\n"
                 + "1. Create a new room."
                 + "\n2. Add clues to a room."
                 + "\n3. Add decoration items to a room."
                 + "\n4. Show updated inventory."
                 + "\n5. Remove from inventory."
+                + "\n6. Create new invoice."
+                + "\n7. Show total income."
+                + "\n8. Generate newsletter."
+                + "\n9. Add new customer to the newsletter."
                 + "\n0. Exit.");
         return option;
     }
@@ -67,8 +71,8 @@ public class Escape {
         int level = 0;
         Level chosenLevel = null;
 
-        name = Input.readString("Introduce the room's name:");
-        level = Input.readInt("Choose the difficulty: 1, 2 or 3");
+        name = Helper.readString("Introduce the room's name:");
+        level = Helper.readInt("Choose the difficulty: 1, 2 or 3");
         chosenLevel = Level.findByValue(level);
 
         Room room = new Room(name, chosenLevel);
@@ -87,13 +91,13 @@ public class Escape {
         int clueType = 0;
         Room roomFound = null;
 
-       name = Input.readString("Please enter the name of your room:");
+       name = Helper.readString("Please enter the name of your room:");
        roomFound = this.inventory.findRoom(name);
 
         if(roomFound == null) {
             System.out.println("Sorry, this room is not in the system.");
         } else {
-            clueType = Input.readInt("What kind of clue do you need: 1. Numerical, 2. Alphabetical, 3. Visual?");
+            clueType = Helper.readInt("What kind of clue do you need: 1. Numerical, 2. Alphabetical, 3. Visual?");
 
             switch (clueType) {
                 case 1:
@@ -124,7 +128,7 @@ public class Escape {
         Room roomFound = null;
         DecorationItem selectedItem = null;
 
-        name = Input.readString("Please enter the name of your room:");
+        name = Helper.readString("Please enter the name of your room:");
         roomFound = this.inventory.findRoom(name);
 
         if(roomFound == null) {
@@ -161,7 +165,7 @@ public class Escape {
 
     private void removeFromInventory() {
         int removal = 0;
-        removal = Input.readInt("What do you want to remove from the inventory? 1. Room, 2. Clue, 3. Decoration item");
+        removal = Helper.readInt("What do you want to remove from the inventory? 1. Room, 2. Clue, 3. Decoration item");
 
         switch(removal) {
             case 1:
