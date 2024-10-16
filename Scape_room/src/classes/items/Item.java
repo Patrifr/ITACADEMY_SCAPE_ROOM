@@ -1,19 +1,25 @@
-package classes;
+package classes.items;
 
 import java.util.UUID;
 
-public class ExtraItem {
+public abstract class Item {
 
     private String id;
+    private String name;
     private double price;
 
-    public ExtraItem(double price) {
+    public Item(String name, double price) {
         this.id = UUID.randomUUID().toString();
+        this.name = name;
         this.price = price;
     }
 
     public String getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public double getPrice() {
@@ -23,6 +29,9 @@ public class ExtraItem {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public abstract void commonMethod();
+
 
 
 }

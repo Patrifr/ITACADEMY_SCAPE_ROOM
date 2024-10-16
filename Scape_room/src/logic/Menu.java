@@ -7,7 +7,7 @@ public class Menu {
     private ScapeRoom scapeRoom = ScapeRoom.getInstance();
     //necessita InvoiceManager
 
-    public void start() {
+    public static void start() {
         int option = 0;
 
         do {
@@ -44,13 +44,13 @@ public class Menu {
                     //removeFromInventory();
                     break;
                 default:
-                    System.out.println("Only numbers from 0 to 9 are valid answers. Please, try again.");
+                    System.out.println("Only numbers from 0 to 8 are valid answers. Please, try again.");
             }
         } while(option != 0);
 
     }
 
-    private int menu() {
+    private static int menu() {
         int option = 0;
         option = Helper.readInt("Choose the action:\n"
                 + "1. Create a new room."
@@ -61,7 +61,6 @@ public class Menu {
                 + "\n6. Manage the accounts." //generate new invoice, show total profits
                 + "\n7. Generate newsletter."
                 + "\n8. Add new customer to the newsletter."
-                + "\n9. "
                 + "\n0. Exit.");
         return option;
     }
