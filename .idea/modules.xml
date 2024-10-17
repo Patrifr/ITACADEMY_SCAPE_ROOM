@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ITACADEMY_SCAPE_ROOM.iml" filepath="$PROJECT_DIR$/.idea/ITACADEMY_SCAPE_ROOM.iml" />
       <module fileurl="file://$PROJECT_DIR$/Scape_room/Prova_nivell.iml" filepath="$PROJECT_DIR$/Scape_room/Prova_nivell.iml" />
     </modules>
   </component>
