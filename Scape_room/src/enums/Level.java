@@ -14,7 +14,7 @@ public enum Level {
         this.levelName = levelName;
     }
 
-    public int getValue() {
+    public int getVALUE() {
         return VALUE;
     }
 
@@ -24,7 +24,7 @@ public enum Level {
 
     public static Level findByValue(int value) {
         for (Level level : values()) {
-            if (level.getValue() == value) {
+            if (level.getVALUE() == value) {
                 return level;
             }
         }

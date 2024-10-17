@@ -1,8 +1,8 @@
 package logic;
 
 import management.InventoryManager;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ScapeRoom {
 
@@ -11,8 +11,8 @@ public class ScapeRoom {
     private final String NAME;
     private static ScapeRoom instance;
     private InventoryManager inventoryManager;
-    //necessita també IncoiveManager
-    //private static final Logger log = LoggerFactory.getLogger(ScapeRoom.class);
+    //necessita també InvoiceManager
+    private static final Logger log = LoggerFactory.getLogger(ScapeRoom.class);
 
     private ScapeRoom(String NAME) {
         this.NAME = NAME;

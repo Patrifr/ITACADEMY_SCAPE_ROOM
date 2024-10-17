@@ -4,12 +4,24 @@ import classes.*;
 import enums.Material;
 import enums.Theme;
 import exceptions.*;
+import logic.ScapeRoom;
 
 import java.util.ArrayList;
 
 public class InventoryManager {
 
     //singleton
+    private static InventoryManager instance;
+
+    public InventoryManager() {
+    } //com que està buit, si cal s'elimina
+
+    public static InventoryManager getInstance() {
+        if (instance == null) {
+            instance = new InventoryManager();
+        }
+        return instance;
+    }
 
     /*private ArrayList<Room> inventoryRooms;
     private ArrayList<Clue> inventoryClues;
