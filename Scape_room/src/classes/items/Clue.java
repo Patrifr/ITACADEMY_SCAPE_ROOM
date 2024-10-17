@@ -7,9 +7,9 @@ public class Clue extends Item {
     private String estimatedTime;
     private Category category;
 
-    public Clue(String name, double price, String estimatedTime, Category category) {
-        super(name, price);
-        this.addIva();
+    public Clue(String name, double price, int quantity, String estimatedTime, Category category) {
+        super(name, price, quantity);
+        //this.addIva();
         this.estimatedTime = estimatedTime;
         this.category = category;
     }
@@ -23,11 +23,11 @@ public class Clue extends Item {
     }
 
     //cal??
-    private double addIva() {
+    /*private double addIva() {
         final double IVA = 0.10;
         super.setPrice((super.getPrice() * IVA) + super.getPrice());
         return super.getPrice();
-    }
+    }*/
 
     //què fem amb aquest method??
     @Override

@@ -44,9 +44,25 @@ public class Helper {
 
     }
 
-    public static void readPrice(double price) {
-        //comprovar que el preu és un double i no és negatiu...
+    public static double readDouble(String message) {
+        //falta comprovar que el preu no sigui negatiu...
+        double data = 0d;
+        boolean dataOk = false;
+
+        while(!dataOk) {
+            try {
+                System.out.println(message);
+                data = input.nextDouble();
+                dataOk = true;
+            } catch(InputMismatchException e) {
+                System.err.println("Format error. Please, try again.");
+                input.nextLine();
+            }
+        }
+        return data;
+
     }
+
 
     public static void readEmail(String email) {
         //comprovar que l'email és correcte...

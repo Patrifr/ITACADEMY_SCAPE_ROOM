@@ -6,9 +6,9 @@ public class DecoItem extends Item {
 
     private Material material;
 
-    public DecoItem(String name, double price, Material material) {
-        super(name, price);
-        this.addIva();
+    public DecoItem(String name, double price, int quantity, Material material) {
+        super(name, price, quantity);
+        //this.addIva();
         this.material = material;
     }
 
@@ -17,11 +17,11 @@ public class DecoItem extends Item {
     }
 
     //cal??
-    private double addIva() {
+    /*private double addIva() {
         final double IVA = 0.21;
         super.setPrice((super.getPrice() * IVA) + super.getPrice());
         return super.getPrice();
-    }
+    }*/
 
     //què fem amb aquest method??
     @Override
