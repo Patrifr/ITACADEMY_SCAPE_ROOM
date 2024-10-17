@@ -1,4 +1,4 @@
-package customer;
+package classes.customer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
