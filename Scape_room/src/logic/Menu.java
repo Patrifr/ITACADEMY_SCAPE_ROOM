@@ -5,7 +5,8 @@ import utils.Helper;
 public class Menu {
 
     private ScapeRoom scapeRoom = ScapeRoom.getInstance();
-    //necessita InvoiceManager
+
+    //tots els mètodes cridats són d'ScapeRoom
 
     public static void start() {
         int option = 0;
