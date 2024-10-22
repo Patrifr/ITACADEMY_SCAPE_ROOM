@@ -20,7 +20,7 @@ public enum Theme {
         return VALUE;
     }
 
-    public String getName() {
+    public String getThemeName() {
         return name;
     }
 

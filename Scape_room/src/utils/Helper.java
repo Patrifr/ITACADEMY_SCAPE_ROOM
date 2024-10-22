@@ -2,6 +2,8 @@ package utils;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Helper {
 
@@ -64,7 +66,28 @@ public class Helper {
     }
 
 
-    public static void readEmail(String email) {
-        //comprovar que l'email és correcte...
+    public static String readEmail(String message) {
+        String data = "";
+        boolean dataOk = false;
+
+        while(!dataOk) {
+            System.out.println(message);
+            data = input.next();
+            input.nextLine();
+            if(!validateEmail(data)) {
+                System.err.println("Invalid email address. Please, try again.");
+            } else {
+                dataOk = true;
+            }
+
+        }
+        return data;
+
     }
+
+    private static boolean validateEmail(String data) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return Pattern.compile(emailRegex).matcher(data).matches();
+    }
+
 }

@@ -19,7 +19,7 @@ public enum Material {
         return VALUE;
     }
 
-    public String getName() {
+    public String getMaterialName() {
         return name;
     }
 

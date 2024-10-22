@@ -4,7 +4,7 @@ import utils.Helper;
 
 public class Menu {
 
-    private ScapeRoom scapeRoom = ScapeRoom.getInstance();
+    private static ScapeRoom scapeRoom = ScapeRoom.getInstance();
 
     //tots els mètodes cridats són d'ScapeRoom
 
@@ -18,7 +18,7 @@ public class Menu {
                     System.out.println("You are exiting the system. Goodbye!");
                     break;
                 case 1:
-                    //newRoom();
+                    scapeRoom.newRoom();
                     break;
                 case 2:
                     //addClues();

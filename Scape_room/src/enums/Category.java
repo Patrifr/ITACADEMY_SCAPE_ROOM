@@ -19,7 +19,7 @@ public enum Category {
         return VALUE;
     }
 
-    public String getName() {
+    public String getCategoryName() {
         return name;
     }
 

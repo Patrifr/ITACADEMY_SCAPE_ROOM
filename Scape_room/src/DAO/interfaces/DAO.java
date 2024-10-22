@@ -6,7 +6,7 @@ public interface DAO<T> {
     //quan els editem hem de tenir en compte que hem d'usar genèrics
 
     //mètodes bàsics CRUD; a afegir els que calguin
-    void add();
+    void add(T t);
     void showData();
     void update();
     void remove();

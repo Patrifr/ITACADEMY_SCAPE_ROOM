@@ -10,7 +10,7 @@ public class ConnectionDB {
 
     protected Connection connection;
     protected ResultSet resultSet;
-    protected Statement statement;
+    protected PreparedStatement statement;
     private static final String URL = "jdbc:mysql://localhost/inventory";
     private static final String USER = "root";
     private String password;
@@ -37,7 +37,7 @@ public class ConnectionDB {
         return connection;
     }
 
-    public Statement getStatement() {
+    public PreparedStatement getStatement() {
         return statement;
     }
 
@@ -76,7 +76,7 @@ public class ConnectionDB {
     }
 
     public static String readPassword() throws IOException {
-        Path fileName = Path.of("src/Password");
+        Path fileName = Path.of("src/Password.txt");
         String password = Files.readString(fileName);
 
         return password;

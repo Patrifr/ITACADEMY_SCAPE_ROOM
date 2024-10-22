@@ -27,6 +27,11 @@ public class ScapeRoom {
         return instance;
     }
 
+    public void newRoom() {
+        RoomManager rm = new RoomManager();
+        rm.createRoom();
+    }
+
     //necessita els mètodes que es criden a Menu
 
 
