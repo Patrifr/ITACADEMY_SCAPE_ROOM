@@ -2,15 +2,42 @@ package DAO.interfaces.implementations;
 
 import DAO.ConnectionDB;
 import DAO.interfaces.ItemDAO;
+import classes.items.Clue;
+import classes.items.DecoItem;
 import classes.items.Item;
 
-public class DAOItemImpl extends ConnectionDB implements ItemDAO {
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+public class DAOItemImpl extends ConnectionDB implements ItemDAO {
+    private static ConnectionDB connection = new ConnectionDB();
+    private static ResultSet rset = null;
     //a cadascun d'aquests mètodes es gestionen la connexió i els statements
 
     @Override
     public void add(Item item) {
+        String sql = "INSERT INTO item (clue_id, deco_id, name_item, enabled, available, quantity) VALUES (?, ?, ?, ?, ?, ?)";
 
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
+            // Asignar valores a los parámetros
+            stmt.setString(3, item.getName());
+            stmt.setBoolean(4, item.isEnabled());
+            stmt.setBoolean(5, item.isAvailable());
+            stmt.setInt(6, item.getQuantity());
+            if(item instanceof Clue){
+                stmt.setString(1, item.getId());
+                stmt.setString(2, null);
+            }else if(item instanceof DecoItem){
+                stmt.setString(2, item.getId());
+                stmt.setString(1, null);
+            }
+            // Ejecutar el comando SQL
+            stmt.executeUpdate();
+            System.out.println("item successfully created.");
+        } catch (SQLException e) {
+            System.out.println("Error inserting the item to the database: " + e.getMessage());
+        }
     }
 
     @Override
@@ -27,4 +54,36 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
     public void remove() {
 
     }
+
+    @Override
+    public void addClue(Clue clue) {
+        String sql = "INSERT INTO clue (id, category) VALUES (?, ?)";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
+            // Asignar valores a los parámetros
+            stmt.setString(1, clue.getId());
+            stmt.setString(2, clue.getCategory().getCategoryName());
+            stmt.executeUpdate();
+            System.out.println("Clue successfully created.");
+        } catch (SQLException e) {
+            System.out.println("Error inserting the Clue to the database: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void addDeco(DecoItem deco) {
+        String sql = "INSERT INTO clue (id, category) VALUES (?, ?)";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
+            // Asignar valores a los parámetros
+            stmt.setString(1, deco.getId());
+            stmt.setString(2, deco.getMaterial().getMaterialName());
+            stmt.executeUpdate();
+            System.out.println("Clue successfully created.");
+
+        } catch (SQLException e) {
+            System.out.println("Error inserting the Clue to the database: " + e.getMessage());
+        }
+    }
 }
+

@@ -63,7 +63,7 @@ public abstract class Item {
         this.quantity = quantity;
     }
 
-    public abstract void commonMethod();
+    /*public abstract void commonMethod();*/
 
 
 
