@@ -27,7 +27,7 @@ public class Menu {
                    // addDecoItems();
                     break;
                 case 4:
-                    //showInventory();
+                    scapeRoom.showInventory();
                     break;
                 case 5:
                     //removeFromInventory();

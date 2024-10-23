@@ -1,5 +1,6 @@
 package logic;
 
+import exceptions.NoRoomsException;
 import management.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ public class ScapeRoom {
     private InventoryManager inventoryManager;
     private InvoiceManager invoiceManager;
     private CustomerManager customerManager;
+    private RoomManager roomManager;
     private static final Logger log = LoggerFactory.getLogger(ScapeRoom.class);
 
     private ScapeRoom(String NAME) {
@@ -18,6 +20,7 @@ public class ScapeRoom {
         this.inventoryManager = InventoryManager.getInstance();
         this.invoiceManager = InvoiceManager.getInstance();
         this.customerManager = CustomerManager.getInstance();
+        this.roomManager = RoomManager.getInstance();
     }
 
     public static ScapeRoom getInstance() {
@@ -28,8 +31,18 @@ public class ScapeRoom {
     }
 
     public void newRoom() {
-        RoomManager rm = new RoomManager();
-        rm.createRoom();
+        roomManager.createRoom();
+    }
+
+    public void showInventory() {
+        try {
+            roomManager.showRooms();
+        } catch (NoRoomsException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //fer el mateix amb clue i decoItem
+
     }
 
     //necessita els mètodes que es criden a Menu

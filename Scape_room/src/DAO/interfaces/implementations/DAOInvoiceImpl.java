@@ -3,6 +3,9 @@ package DAO.interfaces.implementations;
 import DAO.ConnectionDB;
 import DAO.interfaces.InvoiceDAO;
 import classes.Invoice;
+import classes.customer.Customer;
+
+import java.util.List;
 
 public class DAOInvoiceImpl extends ConnectionDB implements InvoiceDAO {
 
@@ -14,7 +17,9 @@ public class DAOInvoiceImpl extends ConnectionDB implements InvoiceDAO {
     }
 
     @Override
-    public void showData() {
+    public List<Invoice> showData() {
+        List<Invoice> invoices = null;
+        return invoices;
 
     }
 

@@ -1,5 +1,7 @@
 package DAO.interfaces;
 
+import java.util.List;
+
 public interface DAO<T> {
 
     //he posat tots els mètodes per defecte sense return i sense paràmetres
@@ -7,7 +9,7 @@ public interface DAO<T> {
 
     //mètodes bàsics CRUD; a afegir els que calguin
     void add(T t);
-    void showData();
+    List<T> showData();
     void update();
     void remove();
 

@@ -2,9 +2,9 @@ package enums;
 
 public enum Level {
 
-    BEGINNER(1, "beginner"),
-    INTERMEDIATE(2, "intermediate"),
-    EXPERT(3, "expert");
+    BEGINNER(1, "Beginner"),
+    INTERMEDIATE(2, "Intermediate"),
+    EXPERT(3, "Expert");
 
     private final int VALUE;
     private String levelName;

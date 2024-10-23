@@ -5,7 +5,7 @@ public class CustomerManager {
     //singleton
     private static CustomerManager instance;
 
-    public CustomerManager() {
+    private CustomerManager() {
     } //com que està buit, si cal s'elimina
 
     public static CustomerManager getInstance() {

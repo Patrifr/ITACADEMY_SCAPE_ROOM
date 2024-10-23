@@ -17,6 +17,10 @@ public class Room {
     //private ArrayList<Clue> clues;
     //private ArrayList<DecoItem> decorationItems;
 
+
+    public Room() {
+    }
+
     public Room(String name, double price, Level level, Theme theme, String completionTime) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
@@ -50,6 +54,30 @@ public class Room {
 
     public Level getLevel() {
         return this.level;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public void setTheme(Theme theme) {
+        this.theme = theme;
+    }
+
+    public void setCompletionTime(String completionTime) {
+        this.completionTime = completionTime;
     }
 
     /*public ArrayList<Clue> getClues() {
