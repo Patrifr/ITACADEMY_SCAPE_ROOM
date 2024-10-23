@@ -3,6 +3,7 @@ package DAO.interfaces;
 import classes.Room;
 import enums.Level;
 import enums.Theme;
+import exceptions.NoRoomsException;
 
 public interface RoomDAO extends DAO<Room> {
 
@@ -10,5 +11,5 @@ public interface RoomDAO extends DAO<Room> {
     //void add(String name, String completionTime, Level chosenLevel, Theme chosenTheme, double price);
     //void add(Room newRoom);
     //void showRooms();
-
+    void findRoom(Room room) throws NoRoomsException;
 }

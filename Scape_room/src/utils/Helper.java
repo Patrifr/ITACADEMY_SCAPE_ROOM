@@ -9,6 +9,28 @@ public class Helper {
 
     private static Scanner input = new Scanner(System.in);
 
+    public static boolean readBoolean(String message){
+        boolean data = true;
+        boolean dataOk = false;
+        String answer = "";
+
+        do{
+            try{
+                System.out.println(message);
+                answer = input.nextLine();
+                if(answer.equalsIgnoreCase("yes")){
+                    dataOk = true;
+                    data = false;
+                }else if(answer.equalsIgnoreCase("no")){
+                    dataOk = true;
+                }
+            } catch (Exception e) {
+                System.err.println("Format error. Please, try again. Type only Yes or No.");
+            }
+
+        }while(!dataOk);
+        return data;
+    }
     public static int readInt(String message) {
         int data = 0;
         boolean dataOk = false;

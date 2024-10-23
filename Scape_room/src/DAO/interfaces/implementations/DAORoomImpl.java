@@ -3,20 +3,44 @@ package DAO.interfaces.implementations;
 import DAO.ConnectionDB;
 import DAO.interfaces.RoomDAO;
 import classes.Room;
-import enums.*;
+import enums.Level;
+import enums.Theme;
+import exceptions.NoRoomsException;
+import utils.Helper;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DAORoomImpl extends ConnectionDB implements RoomDAO {
+    private static ConnectionDB connection = new ConnectionDB();
+    private static ResultSet rs = null;
 
     //a cadascun d'aquests mètodes es gestionen la connexió i els statements
+    @Override
+    public void findRoom(Room room) throws NoRoomsException {
+        String room_name = "";
+        String room_id = "";
+        String sql = "SELECT id FROM room WHERE room_name = ?";
+        room_name = Helper.readString("Introduce the room's name:");
 
+        try(PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setString(1, room_name);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                room_id = rs.getString("id");
+                if(!rs.next()){
+                    throw new NoRoomsException("Error. Room not found.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     @Override
     public void add(Room newRoom) {
-        ConnectionDB connection = new ConnectionDB();
-        String sql = "INSERT INTO room (id, room_name, complete_time, lvl, theme, price, escape_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO room (id, room_name, complete_time, lvl, theme, price) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
             // Asignar valores a los parámetros
@@ -40,7 +64,6 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
 
     @Override
     public List<Room> showData() {
-        ConnectionDB connection = new ConnectionDB();
         List<Room> rooms = null;
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement("SELECT * FROM room")){

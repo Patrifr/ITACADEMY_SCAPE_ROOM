@@ -30,10 +30,10 @@ public class Clue extends Item {
     }*/
 
     //què fem amb aquest method??
-    @Override
+   /* @Override
     public void commonMethod() {
 
-    }
+    }*/
 
     //cal?? falten els atributs de super
     @Override
