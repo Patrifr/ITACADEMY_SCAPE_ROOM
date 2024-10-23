@@ -85,7 +85,7 @@ public class Helper {
 
     }
 
-    private static boolean validateEmail(String data) {
+    public static boolean validateEmail(String data) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         return Pattern.compile(emailRegex).matcher(data).matches();
     }

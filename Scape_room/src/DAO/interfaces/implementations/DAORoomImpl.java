@@ -5,9 +5,9 @@ import DAO.interfaces.RoomDAO;
 import classes.Room;
 import enums.*;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DAORoomImpl extends ConnectionDB implements RoomDAO {
 
@@ -16,7 +16,7 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
     @Override
     public void add(Room newRoom) {
         ConnectionDB connection = new ConnectionDB();
-        String sql = "INSERT INTO room (id, room_name, complete_time, lvl, theme, price) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO room (id, room_name, complete_time, lvl, theme, price, escape_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
             // Asignar valores a los parámetros
@@ -26,6 +26,7 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
             stmt.setString(4, newRoom.getLevel().getLevelName());
             stmt.setString(5, newRoom.getTheme().getThemeName());
             stmt.setDouble(6, newRoom.getPrice());
+            stmt.setString(7, "1");
             // Ejecutar el comando SQL
             stmt.executeUpdate();
             System.out.println("Room successfully created.");
@@ -36,35 +37,33 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
         }*/
 
     }
-    /*public void add(String name, String completionTime, Level chosenLevel, Theme chosenTheme, double price) {
-
-        ConnectionDB connection = new ConnectionDB();
-        connection.getConnection();
-
-        String sql = "INSERT INTO room (room_name, complete_time, lvl, theme, price) VALUES (?, ?, ?, ?, ?)";
-        try {
-            PreparedStatement stmt = connection.getConnection().prepareStatement(sql);
-
-            // Asignar valores a los parámetros
-            //stm.setString(1, id);
-            stmt.setString(1, name);
-            stmt.setString(2, completionTime);
-            stmt.setString(3, chosenLevel.getLevelName());
-            stmt.setString(4, chosenTheme.getName());
-            stmt.setDouble(5, price);
-            // Ejecutar el comando SQL
-            stmt.executeUpdate();
-            System.out.println("Room successfully created.");
-        } catch (SQLException e) {
-            System.out.println("Error inserting the room to the database: " + e.getMessage());
-        } finally {
-            connection.closeConnection();
-        }
-
-    }*/
 
     @Override
-    public void showData() {
+    public List<Room> showData() {
+        ConnectionDB connection = new ConnectionDB();
+        List<Room> rooms = null;
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement("SELECT * FROM room")){
+            rooms = new ArrayList<Room>();
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                Room room = new Room();
+                room.setId(rs.getString("id"));
+                room.setName(rs.getString("room_name"));
+                room.setCompletionTime(rs.getString("complete_time"));
+                room.setLevel(Level.valueOf(rs.getString("lvl").toUpperCase()));
+                room.setTheme(Theme.valueOf(rs.getString("theme").toUpperCase()));
+                room.setPrice(rs.getDouble("price"));
+                rooms.add(room);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error extracting the data: " + e.getMessage());
+        } /*finally {
+            connection.closeConnection();
+        }*/
+        return rooms;
 
     }
 

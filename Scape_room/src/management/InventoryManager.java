@@ -13,7 +13,7 @@ public class InventoryManager {
     //singleton
     private static InventoryManager instance;
 
-    public InventoryManager() {
+    private InventoryManager() {
     } //com que està buit, si cal s'elimina
 
     public static InventoryManager getInstance() {
@@ -22,6 +22,33 @@ public class InventoryManager {
         }
         return instance;
     }
+
+    public void showClues() {
+
+    }
+
+    public void showDecoItems() {
+
+    }
+
+    /*public void showRooms() throws NoRoomsException {
+        List<Room> listedRooms = this.daoRoom.showData();
+
+        if(listedRooms.isEmpty()) {
+            throw new NoRoomsException("There are no registered rooms.");
+        }
+
+        System.out.println("Registered rooms:");
+        listedRooms.stream().map(r -> "ID: " + r.getId() +
+                ", Name: " + r.getName() +
+                ", Level: " + r.getLevel().getLevelName() +
+                ", Theme: " + r.getTheme().getThemeName() +
+                ", Completion time: " + r.getCompletionTime() +
+                ", Price: " + r.getPrice()).forEach(System.out::println);
+        System.out.println("Total number of rooms: " + listedRooms.size());
+        System.out.println("Total price: " + listedRooms.stream().mapToDouble(Room::getPrice).sum());
+
+    }*/
 
     /*private ArrayList<Room> inventoryRooms;
     private ArrayList<Clue> inventoryClues;
