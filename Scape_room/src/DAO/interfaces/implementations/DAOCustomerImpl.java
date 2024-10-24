@@ -13,8 +13,6 @@ import java.util.List;
 
 public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
 
-    //a cadascun d'aquests mètodes es gestionen la connexió i els statements
-
     @Override
     public void add(Customer newCustomer) {
         ConnectionDB connection = new ConnectionDB();
@@ -63,7 +61,6 @@ public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
 
     }
 
-    //Método para buscar customer - seria como update?
     public Customer findCustomerByName(String name) {
         Customer customer = null;
         String sql = "SELECT id, customer_name, email, phone FROM customer WHERE customer_name = ?";
@@ -88,7 +85,7 @@ public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
 
     @Override
     public void update() {
-
+    //Si sobra tiempo modificar datos usuario
     }
 
     @Override
