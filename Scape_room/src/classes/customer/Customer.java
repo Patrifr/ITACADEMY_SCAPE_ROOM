@@ -11,7 +11,7 @@ public class Customer implements NewsletterObserver {
     private ArrayList<String> gifts;
     private String certificate;
 
-    public Customer(String id, String name, String email, String phoneNumber) {
+    public Customer(String name, String email, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.email = email;
