@@ -8,10 +8,10 @@ public class Customer implements NewsletterObserver {
     private String name;
     private String email;
     private String phoneNumber;
-    private ArrayList<String> gifts;
+    private String gifts;
     private String certificate;
 
-    public Customer(String id, String name, String email, String phoneNumber) {
+    public Customer(String name, String email, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -51,18 +51,18 @@ public class Customer implements NewsletterObserver {
     }
 
     public String getCertificate() {
-        return ("You have resolved the escape room! Here is your certificate: " + certificate);
+        return ("You have resolved the escape room " + certificate + " ! Here is your certificate.");
     }
 
     public void setCertificate(String certificate) {
         this.certificate = certificate;
     }
 
-    public ArrayList<String> getGifts() {
-        return gifts;
+    public String getGifts() {
+        return "The customer recive a " + gifts + " as a gift!";
     }
 
-    public void setGifts(ArrayList<String> gifts) {
+    public void setGifts(String gifts) {
         this.gifts = gifts;
     }
 

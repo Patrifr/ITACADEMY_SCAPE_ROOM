@@ -5,16 +5,16 @@ import classes.customer.Customer;
 public class Invoice {
 
     private String id;
+    private String customerId;
     private Customer customer;
     private double priceRooms;
-    private double priceClues;
-    private double priceDecoItems; //PriceItem
     private double IVA;
     private double totalPrice;
 
-    public Invoice(String id, Customer customer) {
+    //Que pasamos por contrsuctor??
+    public Invoice(String id, String customerId) {
         this.id = id;
-        this.customer = customer;
+        this.customerId = customer.getId();
     }
 
     public String getId() {
@@ -42,24 +42,6 @@ public class Invoice {
         this.priceRooms = priceRooms;
     }
 
-    //Llamamos a getPrice de Clue
-    public double getPriceClues() {
-        return priceClues;
-    }
-
-    public void setPriceClues(double priceClues) {
-        this.priceClues = priceClues;
-    }
-
-    //Llamamos a getPrice de DecoItems
-    public double getPriceDecoItems() {
-        return priceDecoItems;
-    }
-
-    public void setPriceDecoItems(double priceDecoItems) {
-        this.priceDecoItems = priceDecoItems;
-    }
-
     //IVA del 21%?
     public double getIVA() {
         IVA = 0.21;
@@ -72,13 +54,13 @@ public class Invoice {
 
     //Pensar método para calcular precio total para cliente.
     public double getTotalPrice() {
-        totalPrice = priceRooms + priceClues + priceDecoItems;
-        return totalPrice;
+        double finalPrice = totalPrice * 0.21; //Calculo con el IVA
+        this.totalPrice = finalPrice;//???
+        return finalPrice;
     }
 
     //Total price de la room?
     public void setTotalPrice(double totalPrice) {
-        double finalPrice = totalPrice / 2; //Ejemplo calculo de precio a cobrar al cliente final.
         this.totalPrice = totalPrice;
     }
 
@@ -89,6 +71,6 @@ public class Invoice {
                 "Customer name: " + customer + '\n' +
                 "Escape room price: " + priceRooms + '\n' +
                 "IVA: " + IVA + '\n' +
-                "Total price: " + totalPrice;
+                "Total price: " + getTotalPrice();
     }
 }

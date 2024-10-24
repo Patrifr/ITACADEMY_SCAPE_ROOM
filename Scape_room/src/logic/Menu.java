@@ -33,16 +33,12 @@ public class Menu {
                     //removeFromInventory();
                     break;
                 case 6:
-                    //removeFromInventory();
+                    scapeRoom.newCustomer();
                     break;
                 case 7:
-                    //removeFromInventory();
+                    scapeRoom.customerMenu();
                     break;
                 case 8:
-                    //removeFromInventory();
-                    break;
-                case 9:
-                    //removeFromInventory();
                     break;
                 default:
                     System.out.println("Only numbers from 0 to 8 are valid answers. Please, try again.");
@@ -60,8 +56,8 @@ public class Menu {
                 + "\n4. Show updated inventory."
                 + "\n5. Remove an item from the inventory."
                 + "\n6. Manage the accounts." //generate new invoice, show total profits
-                + "\n7. Generate newsletter."
-                + "\n8. Add new customer to the newsletter."
+                + "\n7. Create new Customer."
+                + "\n8. Customer's management."
                 + "\n0. Exit.");
         return option;
     }
