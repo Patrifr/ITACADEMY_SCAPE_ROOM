@@ -6,8 +6,8 @@ public class DecoItem extends Item {
 
     private Material material;
 
-    public DecoItem(String name, double price, int quantity, Material material) {
-        super(name, price, quantity);
+    public DecoItem(String name, double price, Material material) {
+        super(name, price);
         //this.addIva();
         this.material = material;
     }
@@ -16,6 +16,9 @@ public class DecoItem extends Item {
         return this.material;
     }
 
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
     //cal??
     /*private double addIva() {
         final double IVA = 0.21;

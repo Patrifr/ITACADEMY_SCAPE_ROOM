@@ -7,21 +7,27 @@ public class Clue extends Item {
     private String estimatedTime;
     private Category category;
 
-    public Clue(String name, double price, int quantity, String estimatedTime, Category category) {
-        super(name, price, quantity);
+    public Clue(){
+    }
+
+    public Clue(String name, double price, /*String estimatedTime,*/ Category category) {
+        super(name, price);
         //this.addIva();
-        this.estimatedTime = estimatedTime;
+       // this.estimatedTime = estimatedTime;
         this.category = category;
     }
 
-    public String getEstimatedTime() {
+   /* public String getEstimatedTime() {
         return this.estimatedTime;
-    }
+    }*/
 
     public Category getCategory() {
         return category;
     }
 
+    public void setCategory(Category category) {
+        this.category = category;
+    }
     //cal??
     /*private double addIva() {
         final double IVA = 0.10;
@@ -39,7 +45,7 @@ public class Clue extends Item {
     @Override
     public String toString() {
         return "Clue{" +
-                "estimatedTime='" + estimatedTime + '\'' +
+                /*"estimatedTime='" + estimatedTime +*/ '\'' +
                 ", category=" + category +
                 '}';
     }
