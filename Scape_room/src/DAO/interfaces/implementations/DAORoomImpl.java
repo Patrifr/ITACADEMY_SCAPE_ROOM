@@ -18,7 +18,7 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
 
     //a cadascun d'aquests mètodes es gestionen la connexió i els statements
     @Override
-    public void findRoom(Room room) throws NoRoomsException {
+    public String findRoom(Room room) throws NoRoomsException {
         String room_name = "";
         String room_id = "";
         String sql = "SELECT id FROM room WHERE room_name = ?";
@@ -36,7 +36,7 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
+        return room_id;
     }
     @Override
     public void add(Room newRoom) {

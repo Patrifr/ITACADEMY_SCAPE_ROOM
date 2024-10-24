@@ -9,9 +9,11 @@ public abstract class Item {
     private double price;
     private boolean enabled;
     private boolean available;
-    private int quantity;
 
-    public Item(String name, double price, int quantity) {
+    public Item (){
+    }
+
+    public Item(String name, double price) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.price = price;
@@ -39,8 +41,8 @@ public abstract class Item {
         return available;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -57,10 +59,6 @@ public abstract class Item {
 
     public void setAvailable(boolean available) {
         this.available = available;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     /*public abstract void commonMethod();*/
