@@ -55,9 +55,9 @@ public class Helper {
 
         while(!dataOk) {
             try {
-                System.out.println(message);
-                data = input.next();
                 input.nextLine();
+                System.out.println(message);
+                data = input.nextLine();
                 dataOk = true;
             } catch (Exception e) {
                 System.err.println("Error. Please, try again.");

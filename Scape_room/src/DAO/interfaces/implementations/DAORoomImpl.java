@@ -3,6 +3,7 @@ package DAO.interfaces.implementations;
 import DAO.ConnectionDB;
 import DAO.interfaces.RoomDAO;
 import classes.Room;
+import classes.customer.Customer;
 import enums.Level;
 import enums.Theme;
 import exceptions.NoRoomsException;
@@ -13,34 +14,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DAORoomImpl extends ConnectionDB implements RoomDAO {
-    private static ConnectionDB connection = new ConnectionDB();
-    private static ResultSet rs = null;
 
     //a cadascun d'aquests mètodes es gestionen la connexió i els statements
     @Override
-    public String findRoom(Room room) throws NoRoomsException {
+    public Room findRoom() throws NoRoomsException {
+        //No funciona
+        ConnectionDB connection = new ConnectionDB();
+        ResultSet rs = null;
+        Room room = null;
         String room_name = "";
-        String room_id = "";
-        String sql = "SELECT id FROM room WHERE room_name = ?";
+        String sql = "SELECT * FROM room WHERE room_name = ?";
+
         room_name = Helper.readString("Introduce the room's name:");
 
         try(PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
             stmt.setString(1, room_name);
             rs = stmt.executeQuery();
-            while(rs.next()){
-                room_id = rs.getString("id");
-                if(!rs.next()){
+
+            if(rs.next()){
+                room = new Room();
+                room.setId(rs.getString("id"));
+                room.setPrice(rs.getDouble("price"));
+                room.setLevel(Level.valueOf(rs.getString("lvl").toUpperCase()));
+                room.setTheme(Theme.valueOf(rs.getString("theme").toUpperCase()));
+                room.setCompletionTime(rs.getString("complete_time"));
+            }else if(!rs.next()){
                     throw new NoRoomsException("Error. Room not found.");
-                }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println("Error while trying to connect to the database." + e.getMessage());
         }
-        return room_id;
+        return room;
     }
+
     @Override
     public void add(Room newRoom) {
-        String sql = "INSERT INTO room (id, room_name, complete_time, lvl, theme, price) VALUES (?, ?, ?, ?, ?, ?)";
+        ConnectionDB connection = new ConnectionDB();
+        String sql = "INSERT INTO room (id, room_name, complete_time, lvl, theme, price, escape_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
             // Asignar valores a los parámetros
@@ -55,7 +65,7 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
             stmt.executeUpdate();
             System.out.println("Room successfully created.");
         } catch (SQLException e) {
-            System.out.println("Error inserting the room to the database: " + e.getMessage());
+            System.err.println("Error inserting the room to the database: " + e.getMessage());
         } /*finally {
             connection.closeConnection();
         }*/
@@ -65,7 +75,7 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
     @Override
     public List<Room> showData() {
         List<Room> rooms = null;
-
+        ConnectionDB connection = new ConnectionDB();
         try (PreparedStatement stmt = connection.getConnection().prepareStatement("SELECT * FROM room")){
             rooms = new ArrayList<Room>();
             ResultSet rs = stmt.executeQuery();

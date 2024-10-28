@@ -9,5 +9,5 @@ public interface RoomDAO extends DAO<Room> {
     //void add(String name, String completionTime, Level chosenLevel, Theme chosenTheme, double price);
     //void add(Room newRoom);
     //void showRooms();
-    String findRoom(Room room) throws NoRoomsException;
+    Room findRoom() throws NoRoomsException;
 }
