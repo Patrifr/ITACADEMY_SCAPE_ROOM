@@ -213,11 +213,11 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
             ResultSet rs = stmt.executeQuery();
 
           while(rs.next()){
-              String id = rs.getString("clue_id");
-              String name = rs.getString("name_item");
-              double price = rs.getDouble("price");
-              Category category = Category.valueOf(rs.getString("category").toUpperCase());
-              newClue = new Clue(name, price, category);
+              newClue = new Clue();
+              newClue.setId(rs.getString("clue_id"));
+              newClue.setName(rs.getString("name_item"));
+              newClue.setPrice(rs.getDouble("price"));
+              newClue.setCategory(Category.valueOf(rs.getString("category").toUpperCase()));
           }
 
         } catch (SQLException e) {
