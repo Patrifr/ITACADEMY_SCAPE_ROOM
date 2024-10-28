@@ -1,5 +1,11 @@
 package logic;
 
+import DAO.interfaces.implementations.DAOItemImpl;
+import DAO.interfaces.implementations.DAORoomImpl;
+import classes.Room;
+import classes.items.Clue;
+import exceptions.NoCluesException;
+import exceptions.NoDecoItemsException;
 import exceptions.NoRoomsException;
 import management.*;
 import org.slf4j.Logger;
@@ -33,11 +39,18 @@ public class ScapeRoom {
     public void newRoom() {
         roomManager.createRoom();
     }
-
+    public void newClue(){
+        inventoryManager.createClue();
+    }
+    public void newDeco(){
+        inventoryManager.createDeco();
+    }
     public void showInventory() {
         try {
             roomManager.showRooms();
-        } catch (NoRoomsException e) {
+            inventoryManager.showClues();
+            inventoryManager.showDecos();
+        } catch (NoRoomsException | NoDecoItemsException | NoCluesException e) {
             System.out.println(e.getMessage());
         }
 
@@ -48,13 +61,39 @@ public class ScapeRoom {
     //MÉTODOS CUSTOMER
 
     public void newCustomer() { //CREAR CUSTOMER
-        CustomerManager manager = CustomerManager.getInstance();
-        manager.createCustomer();
+        this.customerManager.createCustomer();
     }
 
     public void customerMenu(){ //Mostrar customer + Menú gestió newsletter y gift
-        CustomerManager manager =CustomerManager.getInstance();
-        manager.customerMenu();
+        this.customerManager.customerMenu();
+    }
+
+    //MÉTODES INVOICE
+
+    public void accountManagement(){
+        this.invoiceManager.invoiceMenu();
+    }
+
+    //Metodos item
+
+    public void addClueToRoom(){
+        DAOItemImpl daoItem = new DAOItemImpl();
+        DAORoomImpl daoRoom = new DAORoomImpl();
+
+        try{
+            inventoryManager.showAvailableClues();
+            Clue clue = daoItem.findClue();
+            roomManager.showRooms();
+            Room room = daoRoom.findRoom();
+            inventoryManager.addClueToRoom(room, clue);
+        }catch (NoCluesException | NoRoomsException e){
+            System.out.println(e.getMessage());
+        }
+
+
+
+
+
     }
 
     //necessita els mètodes que es criden a Menu

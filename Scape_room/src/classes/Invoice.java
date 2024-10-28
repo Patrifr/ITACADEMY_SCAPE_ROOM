@@ -2,38 +2,33 @@ package classes;
 
 import classes.customer.Customer;
 
-public class Invoice {
+import java.util.UUID;
 
+public class Invoice {
     private String id;
     private String customerId;
-    private Customer customer;
     private double priceRooms;
-    private double IVA;
+    private double IVA = 0.21;
     private double totalPrice;
 
-    //Que pasamos por contrsuctor??
-    public Invoice(String id, String customerId) {
-        this.id = id;
-        this.customerId = customer.getId();
+    // Constructor que recibe el ID y el cliente
+    public Invoice(String customerID, double priceRooms) {
+        this.id = UUID.randomUUID().toString();
+        this.customerId = customerID;
+        this.priceRooms = priceRooms;
+        this.totalPrice = calculateTotalPrice();
+    }
+
+    public Invoice(String id, String customerID, double totalPrice) {
+        this.id = UUID.randomUUID().toString();
+        this.customerId = customerID;
+        this.totalPrice = totalPrice;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    //Llamamos a getPrice de room
     public double getPriceRooms() {
         return priceRooms;
     }
@@ -42,35 +37,34 @@ public class Invoice {
         this.priceRooms = priceRooms;
     }
 
-    //IVA del 21%?
     public double getIVA() {
-        IVA = 0.21;
         return IVA;
     }
 
-    public void setIVA(double IVA) {
-        this.IVA = IVA;
-    }
-
-    //Pensar método para calcular precio total para cliente.
     public double getTotalPrice() {
-        double finalPrice = totalPrice * 0.21; //Calculo con el IVA
-        this.totalPrice = finalPrice;//???
-        return finalPrice;
+        return totalPrice;
     }
 
-    //Total price de la room?
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
+    // Método para calcular el precio total con IVA
+    private double calculateTotalPrice() {
+        this.totalPrice = priceRooms + (priceRooms * IVA);
+        return totalPrice;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     @Override
     public String toString() {
         return "Invoice ticket: \n" +
                 "Invoice id: " + id + '\n' +
-                "Customer name: " + customer + '\n' +
                 "Escape room price: " + priceRooms + '\n' +
                 "IVA: " + IVA + '\n' +
-                "Total price: " + getTotalPrice();
+                "Total price: " + totalPrice;
     }
 }

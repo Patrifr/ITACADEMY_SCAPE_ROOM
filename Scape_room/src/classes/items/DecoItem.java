@@ -6,6 +6,9 @@ public class DecoItem extends Item {
 
     private Material material;
 
+    public DecoItem(){
+    }
+
     public DecoItem(String name, double price, Material material) {
         super(name, price);
         //this.addIva();
