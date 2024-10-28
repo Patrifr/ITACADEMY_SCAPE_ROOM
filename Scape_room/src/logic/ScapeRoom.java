@@ -48,13 +48,17 @@ public class ScapeRoom {
     //MÉTODOS CUSTOMER
 
     public void newCustomer() { //CREAR CUSTOMER
-        CustomerManager manager = CustomerManager.getInstance();
-        manager.createCustomer();
+        this.customerManager.createCustomer();
     }
 
     public void customerMenu(){ //Mostrar customer + Menú gestió newsletter y gift
-        CustomerManager manager =CustomerManager.getInstance();
-        manager.customerMenu();
+        this.customerManager.customerMenu();
+    }
+
+    //MÉTODES INVOICE
+
+    public void accountManagement(){
+        this.invoiceManager.invoiceMenu();
     }
 
     //necessita els mètodes que es criden a Menu

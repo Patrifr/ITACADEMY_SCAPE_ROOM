@@ -13,9 +13,10 @@ public class CustomerManager {
     //singleton
     private static CustomerManager instance;
     DAOCustomerImpl daoCustomer = new DAOCustomerImpl();
+    NewsletterManager newsletterManager = new NewsletterManager();
 
     private CustomerManager() {
-    } //com que està buit, si cal s'elimina
+    }
 
     public static CustomerManager getInstance() {
         if (instance == null) {
@@ -32,14 +33,14 @@ public class CustomerManager {
         name = Helper.readString("Introduce the name of the customer: ");
         email = Helper.readEmail("Introduce the email of the customer: ");
         phoneNumber = Helper.readString("Introduce the phone number: ");
-        newCustomer = new Customer(name,email,phoneNumber);
+        newCustomer = new Customer(name, email, phoneNumber);
 
         daoCustomer = new DAOCustomerImpl();
         daoCustomer.add(newCustomer);
 
     }
 
-    public void showCustomers(){
+    public void showCustomers() {
         List<Customer> customers = daoCustomer.showData();
 
         if (customers.isEmpty()) {
@@ -56,18 +57,13 @@ public class CustomerManager {
 
     }
 
-    public void customerMenu(){
-        showCustomers();
-
+    private void menu() {
+        int opt;
         String customerName = Helper.readString("Introduce the name of the customer for the managment: ");
         Customer customer = daoCustomer.findCustomerByName(customerName);
-        int opt;
-        NewsletterManager newsletterManager = new NewsletterManager();
-
         if (customer == null) {
             System.out.println("Customer not found.");
-        }else {
-
+        } else {
             do {
                 opt = Helper.readInt("1. Add customer to the newsletter. \n" +
                         "2. Unsubscribe customer of the newsletter. \n" +
@@ -76,6 +72,9 @@ public class CustomerManager {
                         "5. Give a gift \n" +
                         "0. Exit.");
                 switch (opt) {
+                    case 0:
+                        System.out.println("You logged out of customer menú.");
+                        break;
                     case 1:
                         newsletterManager.subscribe(customer);
                         break;
@@ -89,20 +88,32 @@ public class CustomerManager {
                     case 4:
                         String certificate = Helper.readString("Write the name of the Scape room for the certificate: ");
                         customer.setCertificate(certificate);
-                        customer.getCertificate();
+                        System.out.println(customer.getCertificate());
                         break;
                     case 5:
                         String gift = Helper.readString("Write the name of the gift: ");
                         customer.setGifts(gift);
-                        customer.getGifts();
+                        System.out.println(customer.getGifts());
                         break;
                     default:
-                        System.out.println("Please, select a valid option of the menu.");
+                        System.err.println("Please select an option of the menu.");
                 }
             } while (opt != 0);
-            {
-                System.out.println("You logged out of customer menú.");
+        }
+    }
+
+    public void customerMenu() {
+        String answer;
+        do {
+            answer = Helper.readString("Do you want to see the list of customer to select one? (YES/NO)");
+            if (answer.equalsIgnoreCase("YES")) {
+                showCustomers();
+                menu();
+            } else if (answer.equalsIgnoreCase("NO")) {
+                menu();
             }
+        }while (!answer.equalsIgnoreCase("Yes") && !answer.equalsIgnoreCase("No")) ;{
         }
     }
 }
+

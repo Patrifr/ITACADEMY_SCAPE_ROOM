@@ -11,7 +11,7 @@ public class Main {
         /*Escape escape = new Escape();
         escape.start();*/
 
-        //Menu.start();
+        Menu.start();
 
        // InventoryManager inventoryManager = new InventoryManager();
        // inventoryManager.createClue();

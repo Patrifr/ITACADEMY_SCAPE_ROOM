@@ -1,6 +1,7 @@
 package classes.customer;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Customer implements NewsletterObserver {
 
@@ -11,8 +12,13 @@ public class Customer implements NewsletterObserver {
     private String gifts;
     private String certificate;
 
+
+    public Customer(){
+
+    }
+
     public Customer(String name, String email, String phoneNumber) {
-        this.id = id;
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;

@@ -33,12 +33,13 @@ public class Menu {
                     //removeFromInventory();
                     break;
                 case 6:
-                    scapeRoom.newCustomer();
+                    scapeRoom.accountManagement();
                     break;
                 case 7:
-                    scapeRoom.customerMenu();
+                    scapeRoom.newCustomer();
                     break;
                 case 8:
+                    scapeRoom.customerMenu();
                     break;
                 default:
                     System.out.println("Only numbers from 0 to 8 are valid answers. Please, try again.");

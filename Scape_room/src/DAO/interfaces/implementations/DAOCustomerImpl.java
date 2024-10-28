@@ -67,14 +67,14 @@ public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
 
         try (Connection conn = this.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setString(1, name);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    String id = rs.getString("id");
-                    String email = rs.getString("email");
-                    String phone = rs.getString("phone");
-                    customer = new Customer(name, email, phone);
+                    customer = new Customer();
+                    customer.setId(rs.getString("id"));
+                    customer.setName(rs.getString("customer_name"));
+                    customer.setEmail( rs.getString("email"));
+                    customer.setPhoneNumber(rs.getString("phone"));
                 }
             }
         } catch (SQLException e) {

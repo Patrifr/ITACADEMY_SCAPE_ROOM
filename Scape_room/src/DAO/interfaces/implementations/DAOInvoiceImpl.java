@@ -27,7 +27,7 @@ public class DAOInvoiceImpl extends ConnectionDB implements InvoiceDAO {
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
             stmt.setString(1,invoice.getId());
-            stmt.setString(2, invoice.getCustomer().getId());
+            stmt.setString(2, invoice.getCustomerId());
             stmt.setDouble(3, invoice.getTotalPrice());
             stmt.executeUpdate();
             System.out.println("Invoice successfully created.");
@@ -51,8 +51,8 @@ public class DAOInvoiceImpl extends ConnectionDB implements InvoiceDAO {
                 //Customer customer = new Customer();
                 String id = rs.getString("id");
                 String customerId = rs.getString("customer_id");
-                String totalPrice = rs.getString("total_price");
-                invoices.add(new Invoice(id,customerId));//Como construimos un obj invoice?
+                double totalPrice = rs.getDouble("total_price");
+                invoices.add(new Invoice(id,customerId, totalPrice));
             }
 
         } catch (SQLException e) {
@@ -60,9 +60,7 @@ public class DAOInvoiceImpl extends ConnectionDB implements InvoiceDAO {
         } /*finally {
             connection.closeConnection();
         }*/
-
         return invoices;
-
     }
 
     @Override
