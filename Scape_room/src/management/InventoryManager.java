@@ -2,12 +2,14 @@ package management;
 
 import DAO.ConnectionDB;
 import DAO.interfaces.implementations.DAOItemImpl;
+import DAO.interfaces.implementations.DAORoomImpl;
 import classes.*;
 import classes.items.Clue;
 import classes.items.DecoItem;
 import classes.items.creator.ClueCreator;
 import classes.items.creator.DecoItemCreator;
 import exceptions.*;
+import utils.Helper;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -18,10 +20,12 @@ public class InventoryManager {
     //singleton
     private static InventoryManager instance;
     private DAOItemImpl daoItem;
+    private DAORoomImpl daoRoom;
 
 
     private InventoryManager() {
         this.daoItem = new DAOItemImpl();
+        this.daoRoom = new DAORoomImpl();
     } //com que està buit, si cal s'elimina
 
     public static InventoryManager getInstance() {
@@ -71,8 +75,6 @@ public class InventoryManager {
                 ", Name: " + c.getName() +
                 ", Price: " + c.getPrice() +
                 ", Category: " + c.getCategory()).forEach(System.out::println);
-        System.out.println("Total number of clues: " + listedAvailableClues.size());
-        System.out.println("Total clue's price: " + listedAvailableClues.stream().mapToDouble(Clue::getPrice).sum());
     }
 
     public void showDecos() throws NoDecoItemsException{
@@ -103,25 +105,82 @@ public class InventoryManager {
                 ", Name: " + d.getName() +
                 ", Price: " + d.getPrice() +
                 ", Material: " + d.getMaterial()).forEach(System.out::println);
-        System.out.println("Total number of decorations: " + listedAvailableDecos.size());
-        System.out.println("Total decoration's price: " + listedAvailableDecos.stream().mapToDouble(DecoItem::getPrice).sum());
+    }
+    public void showRooms() throws NoRoomsException {
+        List<Room> listedRooms = this.daoRoom.showData();
+
+        if(listedRooms.isEmpty()) {
+            throw new NoRoomsException("There are no registered rooms.");
+        }
+
+        System.out.println("Registered rooms:");
+        listedRooms.stream().map(r -> "ID: " + r.getId() +
+                ", Name: " + r.getName() +
+                ", Level: " + r.getLevel().getLevelName() +
+                ", Theme: " + r.getTheme().getThemeName() +
+                ", Completion time: " + r.getCompletionTime() +
+                ", Price: " + r.getPrice()).forEach(System.out::println);
     }
 
-    public void addClueToRoom(Room room, Clue clue){
-        ConnectionDB connection = new ConnectionDB();
-        String sql = "UPDATE item SET item.room_id = ?, available = ? WHERE name_item = ?";
-        //intentar agafar el id de la clue insertada per consola i buscarla pel seu id.
-        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
-            stmt.setString(1, room.getId());
-            stmt.setBoolean(2, false);
-            stmt.setString(3, clue.getName());
-            stmt.executeUpdate();
-            System.out.println("Clue successfully updated.");
-
-        } catch (SQLException e) {
-            System.out.println("Error updating the clue item in the database: " + e.getMessage());
+    public void addClueToRoom(){
+        try{
+            showAvailableClues();
+            Clue clue = daoItem.findClue();
+            showRooms();
+            Room room = daoRoom.findRoom();
+            daoItem.addClueToRoom(room, clue);
+        }catch (NoCluesException | NoRoomsException e){
+            System.out.println(e.getMessage());
         }
     }
+    public void addDecoToRoom(){
+        try{
+            showAvailableDecos();
+            DecoItem deco = daoItem.findDeco();
+            showRooms();
+            Room room = daoRoom.findRoom();
+            daoItem.addDecoToRoom(room, deco);
+        }catch (NoRoomsException | NoDecoItemsException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void removeClue(){
+        try{
+            showClues();
+            Clue clue = daoItem.findClue();
+            daoItem.removeClue(clue);
+        }catch (NoCluesException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void removeDeco(){
+        try{
+            showDecos();
+            DecoItem deco = daoItem.findDeco();
+            daoItem.removeDeco(deco);
+        }catch (NoDecoItemsException e){
+            System.out.println(e.getMessage());
+        }
+    }
+}
+
+
+    /*public void removeClue(Clue clue){
+        ConnectionDB connection = new ConnectionDB();
+        String sql = "UPDATE item SET item.room_id = null, available = ?, enable = ? WHERE clue_id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
+            stmt.setBoolean(1, false);
+            stmt.setBoolean(2, false);
+            stmt.setString(3, clue_id);
+            stmt.executeUpdate();
+            System.out.println("Clue removed successfully.");
+
+        }catch (SQLException e) {
+            System.out.println("Error removing the clue item from the database: " + e.getMessage());
+        }
+    }*/
+
    /*public Item addClueToRoom() throws NoRoomsException, NoCluesException {
         DAOItemImpl daoItem = new DAOItemImpl();
         //Mostrem les clues.
@@ -167,5 +226,3 @@ public class InventoryManager {
             }
         }while(opt != 0);
     }*/
-
-}

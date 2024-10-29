@@ -2,7 +2,9 @@ package management;
 
 import DAO.interfaces.implementations.DAORoomImpl;
 import classes.Room;
+import classes.items.Clue;
 import enums.*;
+import exceptions.NoCluesException;
 import exceptions.NoRoomsException;
 import utils.Helper;
 
@@ -53,7 +55,7 @@ public class RoomManager {
 
     }
 
-    public void showRooms() throws NoRoomsException {
+    public void showRoomsWithPrice() throws NoRoomsException {
         List<Room> listedRooms = this.daoRoom.showData();
 
         if(listedRooms.isEmpty()) {
@@ -70,6 +72,10 @@ public class RoomManager {
         System.out.println("Total number of rooms: " + listedRooms.size());
         System.out.println("Total price: " + listedRooms.stream().mapToDouble(Room::getPrice).sum());
 
+    }
+    public void removeRoom() throws NoRoomsException {
+        Room room = daoRoom.findRoom();
+        daoRoom.removeRoom(room);
     }
 
 }

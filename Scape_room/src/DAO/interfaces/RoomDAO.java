@@ -10,4 +10,5 @@ public interface RoomDAO extends DAO<Room> {
     //void add(Room newRoom);
     //void showRooms();
     Room findRoom() throws NoRoomsException;
+    void removeRoom(Room room);
 }

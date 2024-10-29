@@ -2,13 +2,13 @@ package DAO.interfaces.implementations;
 
 import DAO.ConnectionDB;
 import DAO.interfaces.ItemDAO;
+import classes.Room;
 import classes.items.Clue;
 import classes.items.DecoItem;
 import classes.items.Item;
 import enums.Category;
 import enums.Material;
 import exceptions.NoRoomsException;
-import management.InventoryManager;
 import utils.Helper;
 
 import java.sql.*;
@@ -40,7 +40,6 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
             }
             // Ejecutar el comando SQL
             stmt.executeUpdate();
-            System.out.println("item successfully created.");
         } catch (SQLException e) {
             System.out.println("Error inserting the item to the database: " + e.getMessage());
         }
@@ -201,51 +200,115 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
         return decos;
     }
 
-    public Clue findClue(){
-        //Checked: Funciona.
-        String clueName = Helper.readString("Write down the name of the clue:");
-        String sql = "SELECT item.clue_id, item.name_item, item.price, clue.category FROM item INNER JOIN clue ON clue.id = item.clue_id WHERE item.available = 1 AND item.enabled = 1 AND item.name_item = ?";
+    public Clue findClue() {
+        Clue clue = null;
+        String clueName = Helper.readString("Write the name of the clue: ");
+        String sql = "SELECT item.clue_id, item.name_item, item.price, clue.category FROM item INNER JOIN clue ON clue.id = item.clue_id WHERE item.enabled = 1 AND item.name_item = ?";
+
+        try (Connection conn = this.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, clueName);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    clue = new Clue();
+                    clue.setId(rs.getString("clue_id"));
+                    clue.setName(rs.getString("name_item"));
+                    clue.setPrice(rs.getDouble("price"));
+                    clue.setCategory(Category.valueOf(rs.getString("category").toUpperCase()));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error finding customer: " + e.getMessage());
+        }
+        return clue;
+    }
+
+    public DecoItem findDeco(){
+        String decoName = Helper.readString("Write down the name of the decoration item:");
+        String sql = "SELECT item.deco_id, item.name_item, item.price, deco.material FROM item INNER JOIN deco ON deco.id = item.deco_id WHERE item.enabled = 1 AND item.name_item = ?";
         ConnectionDB connection = new ConnectionDB();
-        Clue newClue = null;
+        DecoItem newDeco = null;
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
-            stmt.setString(1, clueName);
+            stmt.setString(1, decoName);
             ResultSet rs = stmt.executeQuery();
 
-          while(rs.next()){
-              newClue = new Clue();
-              newClue.setId(rs.getString("clue_id"));
-              newClue.setName(rs.getString("name_item"));
-              newClue.setPrice(rs.getDouble("price"));
-              newClue.setCategory(Category.valueOf(rs.getString("category").toUpperCase()));
-          }
+            while(rs.next()){
+                newDeco = new DecoItem();
+                newDeco.setId(rs.getString("deco_id"));
+                newDeco.setName(rs.getString("name_item"));
+                newDeco.setPrice(rs.getDouble("price"));
+                newDeco.setMaterial(Material.valueOf(rs.getString("material").toUpperCase()));
+            }
 
         } catch (SQLException e) {
             System.out.println("Error extracting the data: " + e.getMessage());
         }
-        return newClue;
+        return newDeco;
     }
-    /*public void updateAvailable(Item item){
-        //canviar el status de available
-        String item_name = item.getName();
-        String sql = "UPDATE item SET available = 0 WHERE name_item = ?";
+    public void addClueToRoom(Room room, Clue clue){
         ConnectionDB connection = new ConnectionDB();
-
+        String sql = "UPDATE item SET item.room_id = ?, available = ? WHERE clue_id = ? AND available = 1";
+        //intentar agafar el id de la clue insertada per consola i buscarla pel seu id.
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
-            stmt.setString(1, item_name);
-            ResultSet rs = stmt.executeQuery();
-
-            while(rs.next()){
-                item.setAvailable(rs.getBoolean("available"));
-            }
+            stmt.setString(1, room.getId());
+            stmt.setBoolean(2, false);
+            stmt.setString(3, clue.getId());
+            stmt.executeUpdate();
+            System.out.println("Clue successfully updated.");
 
         } catch (SQLException e) {
-            System.out.println("Error updating the data: " + e.getMessage());
+            System.out.println("Error updating the clue item in the database: " + e.getMessage());
         }
-    }*/
+    }
 
-    //Enlazar la clue con la room y cambiarle el available.
+    public void addDecoToRoom(Room room, DecoItem deco){
+        ConnectionDB connection = new ConnectionDB();
+        String sql = "UPDATE item SET item.room_id = ?, available = ? WHERE deco_id = ? AND available = 1";
 
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
+            stmt.setString(1, room.getId());
+            stmt.setBoolean(2, false);
+            stmt.setString(3, deco.getId());
+            stmt.executeUpdate();
+            System.out.println("Decoration item successfully updated.");
+
+        } catch (SQLException e) {
+            System.out.println("Error updating the decoration item in the database: " + e.getMessage());
+        }
+    }
+    public void removeClue(Clue clue){
+        ConnectionDB connection = new ConnectionDB();
+        String sql = "UPDATE item SET item.room_id = ?, available = ?, enabled = ? WHERE clue_id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
+            stmt.setString(1, null);
+            stmt.setBoolean(2, false);
+            stmt.setBoolean(3, false);
+            stmt.setString(4, clue.getId());
+            stmt.executeUpdate();
+            System.out.println("Clue item successfully removed.");
+
+        } catch (SQLException e) {
+            System.out.println("Error removing the clue item from the database: " + e.getMessage());
+        }
+    }
+    public void removeDeco(DecoItem deco){
+        ConnectionDB connection = new ConnectionDB();
+        String sql = "UPDATE item SET item.room_id = ?, available = ?, enabled = ? WHERE deco_id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
+            stmt.setString(1, null);
+            stmt.setBoolean(2, false);
+            stmt.setBoolean(3, false);
+            stmt.setString(4, deco.getId());
+            stmt.executeUpdate();
+            System.out.println("Decoration item successfully removed.");
+
+        } catch (SQLException e) {
+            System.out.println("Error removing the decoration item from the database: " + e.getMessage());
+        }
+    }
     @Override
     public void addToRoom() throws NoRoomsException {
 

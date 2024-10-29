@@ -14,6 +14,7 @@ public class Room {
     private Level level;
     private Theme theme;
     private String completionTime;
+    private boolean enabled;
     //private ArrayList<Clue> clues;
     //private ArrayList<DecoItem> decorationItems;
 
@@ -28,6 +29,7 @@ public class Room {
         this.level = level;
         this.theme = theme;
         this.completionTime = completionTime;
+        this.enabled = true;
         //this.clues = new ArrayList<Clue>();
         //this.decorationItems = new ArrayList<DecoItem>();
     }
@@ -42,6 +44,10 @@ public class Room {
 
     public double getPrice() {
         return price;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public Theme getTheme() {
@@ -66,6 +72,10 @@ public class Room {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public void setLevel(Level level) {

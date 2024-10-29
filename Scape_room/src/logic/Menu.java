@@ -6,8 +6,6 @@ public class Menu {
 
     private static ScapeRoom scapeRoom = ScapeRoom.getInstance();
 
-    //tots els mètodes cridats són d'ScapeRoom
-
     public static void start() {
         int option = 0;
 
@@ -30,13 +28,13 @@ public class Menu {
                     scapeRoom.newDeco();
                     break;
                 case 5:
-                    //add deco to a room
+                    scapeRoom.addDecoToRoom();
                     break;
                 case 6:
                     scapeRoom.showInventory();
                     break;
                 case 7:
-                    //removeFromInventory();
+                    scapeRoom.removeItems();
                     break;
                 case 8:
                     scapeRoom.accountManagement();
@@ -64,7 +62,7 @@ public class Menu {
                 + "\n5. Add decoration item to a room."
                 + "\n6. Show updated inventory."
                 + "\n7. Remove an item from the inventory."
-                + "\n8. Manage the accounts." //generate new invoice, show total profits
+                + "\n8. Manage the accounts."
                 + "\n9. Create new Customer."
                 + "\n10. Customer's management."
                 + "\n0. Exit.");

@@ -4,6 +4,7 @@ import DAO.ConnectionDB;
 import DAO.interfaces.RoomDAO;
 import classes.Room;
 import classes.customer.Customer;
+import classes.items.Clue;
 import enums.Level;
 import enums.Theme;
 import exceptions.NoRoomsException;
@@ -18,12 +19,11 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
     //a cadascun d'aquests mètodes es gestionen la connexió i els statements
     @Override
     public Room findRoom() throws NoRoomsException {
-        //No funciona
         ConnectionDB connection = new ConnectionDB();
         ResultSet rs = null;
         Room room = null;
         String room_name = "";
-        String sql = "SELECT * FROM room WHERE room_name = ?";
+        String sql = "SELECT * FROM room WHERE room_name = ? AND enabled = 1";
 
         room_name = Helper.readString("Introduce the room's name:");
 
@@ -50,7 +50,7 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
     @Override
     public void add(Room newRoom) {
         ConnectionDB connection = new ConnectionDB();
-        String sql = "INSERT INTO room (id, room_name, complete_time, lvl, theme, price, escape_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO room (id, room_name, complete_time, lvl, theme, price, enabled, escape_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
             // Asignar valores a los parámetros
@@ -60,15 +60,13 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
             stmt.setString(4, newRoom.getLevel().getLevelName());
             stmt.setString(5, newRoom.getTheme().getThemeName());
             stmt.setDouble(6, newRoom.getPrice());
-            stmt.setString(7, "1");
-            // Ejecutar el comando SQL
+            stmt.setBoolean(7, newRoom.isEnabled());
+            stmt.setString(8, "1");
             stmt.executeUpdate();
             System.out.println("Room successfully created.");
         } catch (SQLException e) {
             System.err.println("Error inserting the room to the database: " + e.getMessage());
-        } /*finally {
-            connection.closeConnection();
-        }*/
+        }
 
     }
 
@@ -76,7 +74,7 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
     public List<Room> showData() {
         List<Room> rooms = null;
         ConnectionDB connection = new ConnectionDB();
-        try (PreparedStatement stmt = connection.getConnection().prepareStatement("SELECT * FROM room")){
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement("SELECT * FROM room WHERE enabled = 1")){
             rooms = new ArrayList<Room>();
             ResultSet rs = stmt.executeQuery();
 
@@ -99,6 +97,21 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
         return rooms;
 
     }
+    public void removeRoom(Room room){
+        ConnectionDB connection = new ConnectionDB();
+        String sql = "UPDATE room SET enabled = ? WHERE room.id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
+            stmt.setBoolean(1, false);
+            stmt.setString(2, room.getId());
+            stmt.executeUpdate();
+            System.out.println("Room successfully removed.");
+
+        } catch (SQLException e) {
+            System.out.println("Error removing the room from the database: " + e.getMessage());
+        }
+    }
+
 
     @Override
     public void update() {
@@ -107,8 +120,6 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
 
     @Override
     public void remove() {
-
     }
-
 
 }
