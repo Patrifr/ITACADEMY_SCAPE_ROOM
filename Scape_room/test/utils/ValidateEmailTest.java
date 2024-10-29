@@ -14,7 +14,6 @@ public class ValidateEmailTest {
         String validEmail = "username@domain.com";
         assertTrue(Helper.validateEmail(validEmail));
     }
-    //també es podria parametritzar
 
     @Test
     @DisplayName("Checking email validation with an invalid address.")

@@ -18,6 +18,7 @@ public interface ItemDAO extends DAO<Item> {
     void addClueToRoom(Room room, Clue clue);
     void addDecoToRoom(Room room, DecoItem deco);
     public void removeClue(Clue clue);
+    public void removeDeco(DecoItem deco);
     void addToRoom()throws NoRoomsException;
     //aquí mètodes específics que només afectin Item, que seran els mateixos per Clue i DecoItem
 

@@ -277,6 +277,8 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
             System.out.println("Error updating the decoration item in the database: " + e.getMessage());
         }
     }
+
+    @Override
     public void removeClue(Clue clue){
         ConnectionDB connection = new ConnectionDB();
         String sql = "UPDATE item SET item.room_id = ?, available = ?, enabled = ? WHERE clue_id = ?";
@@ -293,6 +295,8 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
             System.out.println("Error removing the clue item from the database: " + e.getMessage());
         }
     }
+
+    @Override
     public void removeDeco(DecoItem deco){
         ConnectionDB connection = new ConnectionDB();
         String sql = "UPDATE item SET item.room_id = ?, available = ?, enabled = ? WHERE deco_id = ?";
