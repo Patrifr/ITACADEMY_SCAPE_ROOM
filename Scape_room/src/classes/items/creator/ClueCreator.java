@@ -9,20 +9,25 @@ public class ClueCreator extends ItemCreator {
 
     @Override
     public Item createItem() {
-        String name = "", estimatedTime = "";
+        String name = "";
         final double PRICE = 5d;
         int category = 0;
         Category chosenCategory = null;
-        //cal tota la prèvia???
 
         name = Helper.readString("Introduce the name of the clue:");
-        category = Helper.readInt("Choose a category:\n"
-                + "1. Sensory"
-                + "\n2. Alphabetical"
-                + "\n3. Numerical"
-                + "\n4. Combined");
-        chosenCategory = Category.findByValue(category);
+        do {
+            category = Helper.readInt("Choose a category:\n"
+                    + "1. Sensory"
+                    + "\n2. Alphabetical"
+                    + "\n3. Numerical"
+                    + "\n4. Combined");
+            if(category < 1 || category > 4) {
+                System.out.println("Please, choose a valid option: 1, 2, 3, 4.");
+            } else {
+                chosenCategory = Category.findByValue(category);
+            }
+        } while (category < 1 || category > 4);
 
-        return new Clue(name, PRICE, /*estimatedTime,*/ chosenCategory);
+        return new Clue(name, PRICE, chosenCategory);
     }
 }

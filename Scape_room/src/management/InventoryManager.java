@@ -14,8 +14,8 @@ import java.util.List;
 public class InventoryManager {
 
     private static InventoryManager instance;
-    private DAOItemImpl daoItem;
-    private DAORoomImpl daoRoom;
+    private final DAOItemImpl daoItem;
+    private final DAORoomImpl daoRoom;
 
 
     private InventoryManager() {
@@ -35,12 +35,38 @@ public class InventoryManager {
         this.daoItem.addClue(newClue);
         this.daoItem.add(newClue);
     }
+
+    public void addClueToRoom(){
+        try{
+            this.showAvailableClues();
+            Clue clue = daoItem.findClue();
+            this.showRooms();
+            Room room = daoRoom.findRoom();
+            daoItem.addClueToRoom(room, clue);
+        }catch (NoCluesException | NoRoomsException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void createDeco(){
         DecoItemCreator decoItemCreator = new DecoItemCreator();
         DecoItem newDeco = (DecoItem) decoItemCreator.createItem();
         this.daoItem.addDeco(newDeco);
         this.daoItem.add(newDeco);
     }
+
+    public void addDecoToRoom(){
+        try{
+            this.showAvailableDecos();
+            DecoItem deco = daoItem.findDeco();
+            this.showRooms();
+            Room room = daoRoom.findRoom();
+            daoItem.addDecoToRoom(room, deco);
+        }catch (NoRoomsException | NoDecoItemsException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void showClues() throws NoCluesException{
         List<Clue> listedClues = this.daoItem.showClue();
 
@@ -100,6 +126,7 @@ public class InventoryManager {
                 ", Price: " + d.getPrice() +
                 ", Material: " + d.getMaterial()).forEach(System.out::println);
     }
+
     public void showRooms() throws NoRoomsException {
         List<Room> listedRooms = this.daoRoom.showData();
 
@@ -116,40 +143,19 @@ public class InventoryManager {
                 ", Price: " + r.getPrice()).forEach(System.out::println);
     }
 
-    public void addClueToRoom(){
-        try{
-            showAvailableClues();
-            Clue clue = daoItem.findClue();
-            showRooms();
-            Room room = daoRoom.findRoom();
-            daoItem.addClueToRoom(room, clue);
-        }catch (NoCluesException | NoRoomsException e){
-            System.out.println(e.getMessage());
-        }
-    }
-    public void addDecoToRoom(){
-        try{
-            showAvailableDecos();
-            DecoItem deco = daoItem.findDeco();
-            showRooms();
-            Room room = daoRoom.findRoom();
-            daoItem.addDecoToRoom(room, deco);
-        }catch (NoRoomsException | NoDecoItemsException e){
-            System.out.println(e.getMessage());
-        }
-    }
     public void removeClue(){
         try{
-            showClues();
+            this.showClues();
             Clue clue = daoItem.findClue();
             daoItem.removeClue(clue);
         }catch (NoCluesException e){
             System.out.println(e.getMessage());
         }
     }
+
     public void removeDeco(){
         try{
-            showDecos();
+            this.showDecos();
             DecoItem deco = daoItem.findDeco();
             daoItem.removeDeco(deco);
         }catch (NoDecoItemsException e){

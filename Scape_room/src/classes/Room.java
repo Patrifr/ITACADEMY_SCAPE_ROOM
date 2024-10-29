@@ -4,8 +4,6 @@ import enums.Level;
 import enums.Theme;
 import java.util.UUID;
 
-//import java.util.ArrayList;
-
 public class Room {
 
     private String id;
@@ -15,9 +13,6 @@ public class Room {
     private Theme theme;
     private String completionTime;
     private boolean enabled;
-    //private ArrayList<Clue> clues;
-    //private ArrayList<DecoItem> decorationItems;
-
 
     public Room() {
     }
@@ -30,8 +25,6 @@ public class Room {
         this.theme = theme;
         this.completionTime = completionTime;
         this.enabled = true;
-        //this.clues = new ArrayList<Clue>();
-        //this.decorationItems = new ArrayList<DecoItem>();
     }
 
     public String getId() {
@@ -90,26 +83,12 @@ public class Room {
         this.completionTime = completionTime;
     }
 
-    /*public ArrayList<Clue> getClues() {
-        return this.clues;
-    }
-
-    public ArrayList<DecoItem> getDecorationItems() {
-        return this.decorationItems;
-    }*/
-
-
-
-
-    //cal??
     @Override
     public String toString() {
         return "Room{" +
                 "level=" + level +
                 ", theme=" + theme +
                 ", completionTime='" + completionTime + '\'' +
-                /*", clues=" + clues +
-                ", decorationItems=" + decorationItems +*/
                 '}';
     }
 }

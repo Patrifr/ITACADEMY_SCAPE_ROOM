@@ -1,6 +1,5 @@
 package classes.customer;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 public class Customer implements NewsletterObserver {
@@ -13,9 +12,7 @@ public class Customer implements NewsletterObserver {
     private String gifts;
     private String certificate;
 
-
     public Customer(){
-
     }
 
     public Customer(String name, String surname, String email, String phoneNumber) {
@@ -67,7 +64,7 @@ public class Customer implements NewsletterObserver {
     }
 
     public String getCertificate() {
-        return ("You have resolved the escape room " + certificate + " ! Here is your certificate.");
+        return "You have resolved the escape room " + certificate + " ! Here is your certificate.";
     }
 
     public void setCertificate(String certificate) {
@@ -99,6 +96,5 @@ public class Customer implements NewsletterObserver {
                 "Gifts " + gifts +
                 "Certificate: " + certificate;
     }
-
 
 }

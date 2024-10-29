@@ -3,7 +3,6 @@ package DAO.interfaces.implementations;
 import DAO.ConnectionDB;
 import DAO.interfaces.CustomerDAO;
 import classes.customer.Customer;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +19,6 @@ public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
         String sql = "INSERT INTO customer (id, customer_name, customer_surname, email, phone) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
-            // Asignar valores a los parámetros
             stmt.setString(1,newCustomer.getId());
             stmt.setString(2, newCustomer.getName());
             stmt.setString(3, newCustomer.getSurname());
@@ -43,7 +41,6 @@ public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()) {
-                //Customer customer = new Customer();
                 String id = rs.getString("id");
                 String name = rs.getString("customer_name");
                 String surname = rs.getString("customer_surname");
@@ -56,14 +53,9 @@ public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
             System.out.println("Error extracting the data: " + e.getMessage());
         }
         return customers;
-
     }
 
     @Override
-    public void update() {
-
-    }
-
     public Customer findCustomerByEmail(String email) {
         Customer customer = null;
         String sql = "SELECT id, customer_name, customer_surname, email, phone FROM customer WHERE email = ?";
@@ -87,6 +79,7 @@ public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
         return customer;
     }
 
+    @Override
     public void updateCustomer(String email, String fieldName, String newValue) {
         List<String> allowedFields = Arrays.asList("customer_name", "customer_surname", "email", "phone");
         if (!allowedFields.contains(fieldName)) {
@@ -112,8 +105,4 @@ public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
         }
     }
 
-    @Override
-    public void remove() {
-
-    }
 }

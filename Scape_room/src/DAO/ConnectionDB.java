@@ -28,9 +28,6 @@ public class ConnectionDB {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USER, this.password);
-            //connection.setAutoCommit(false); //Això ho posa el noi del tutorial pero no se ben be per a que serveix.
-            System.out.println("Connected successfully.");
-
         } catch (ClassNotFoundException | SQLException e) {
             System.err.println("Error while attempting connection to the database.");
         }
@@ -42,6 +39,7 @@ public class ConnectionDB {
     }
 
     public ResultSet getResultSet() {
+
         return resultSet;
     }
 
@@ -81,8 +79,5 @@ public class ConnectionDB {
 
         return password;
     }
-
-
-
 
 }

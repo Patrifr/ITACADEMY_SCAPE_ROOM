@@ -4,22 +4,15 @@ import enums.Category;
 
 public class Clue extends Item {
 
-    private String estimatedTime;
     private Category category;
 
     public Clue(){
     }
 
-    public Clue(String name, double price, /*String estimatedTime,*/ Category category) {
+    public Clue(String name, double price, Category category) {
         super(name, price);
-        //this.addIva();
-       // this.estimatedTime = estimatedTime;
         this.category = category;
     }
-
-   /* public String getEstimatedTime() {
-        return this.estimatedTime;
-    }*/
 
     public Category getCategory() {
         return category;
@@ -28,25 +21,11 @@ public class Clue extends Item {
     public void setCategory(Category category) {
         this.category = category;
     }
-    //cal??
-    /*private double addIva() {
-        final double IVA = 0.10;
-        super.setPrice((super.getPrice() * IVA) + super.getPrice());
-        return super.getPrice();
-    }*/
 
-    //què fem amb aquest method??
-   /* @Override
-    public void commonMethod() {
-
-    }*/
-
-    //cal?? falten els atributs de super
     @Override
     public String toString() {
         return "Clue{" +
-                /*"estimatedTime='" + estimatedTime +*/ '\'' +
-                ", category=" + category +
+                "category=" + category +
                 '}';
     }
 }

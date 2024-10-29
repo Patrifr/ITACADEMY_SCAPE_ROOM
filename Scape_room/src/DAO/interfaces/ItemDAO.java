@@ -4,6 +4,8 @@ import classes.Room;
 import classes.items.Clue;
 import classes.items.DecoItem;
 import classes.items.Item;
+import exceptions.NoCluesException;
+import exceptions.NoDecoItemsException;
 import exceptions.NoRoomsException;
 
 import java.util.List;
@@ -17,9 +19,9 @@ public interface ItemDAO extends DAO<Item> {
     List<DecoItem> showDecoAvailable();
     void addClueToRoom(Room room, Clue clue);
     void addDecoToRoom(Room room, DecoItem deco);
-    public void removeClue(Clue clue);
-    public void removeDeco(DecoItem deco);
-    void addToRoom()throws NoRoomsException;
-    //aquí mètodes específics que només afectin Item, que seran els mateixos per Clue i DecoItem
+    void removeClue(Clue clue);
+    void removeDeco(DecoItem deco);
+    Clue findClue() throws NoCluesException;
+    DecoItem findDeco() throws NoDecoItemsException;
 
 }

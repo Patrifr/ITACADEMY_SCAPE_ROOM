@@ -3,9 +3,6 @@ package DAO.interfaces.implementations;
 import DAO.ConnectionDB;
 import DAO.interfaces.InvoiceDAO;
 import classes.Invoice;
-import classes.customer.Customer;
-import utils.Helper;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,11 +26,10 @@ public class DAOInvoiceImpl extends ConnectionDB implements InvoiceDAO {
         } catch (SQLException e) {
             System.out.println("Error inserting the invoice to the database: " + e.getMessage());
         }
-
     }
 
     @Override
-    public List<Invoice> showData() { //ShowTotalProfits
+    public List<Invoice> showData() {
         ConnectionDB connection = new ConnectionDB();
         List<Invoice> invoices = null;
         try (PreparedStatement stmt = connection.getConnection().prepareStatement("SELECT * FROM invoice")){
@@ -44,7 +40,7 @@ public class DAOInvoiceImpl extends ConnectionDB implements InvoiceDAO {
                 String id = rs.getString("id");
                 String customerId = rs.getString("customer_id");
                 double totalPrice = rs.getDouble("total_price");
-                invoices.add(new Invoice(id,customerId, totalPrice));
+                invoices.add(new Invoice(id, customerId, totalPrice));
             }
 
         } catch (SQLException e) {
@@ -53,15 +49,4 @@ public class DAOInvoiceImpl extends ConnectionDB implements InvoiceDAO {
         return invoices;
     }
 
-
-
-    @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void remove() {
-
-    }
 }

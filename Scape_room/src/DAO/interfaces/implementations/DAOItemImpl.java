@@ -8,11 +8,10 @@ import classes.items.DecoItem;
 import classes.items.Item;
 import enums.Category;
 import enums.Material;
-import exceptions.NoRoomsException;
+import exceptions.NoCluesException;
+import exceptions.NoDecoItemsException;
 import utils.Helper;
-
 import java.sql.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,6 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
         ConnectionDB connection = new ConnectionDB();
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
-            // Asignar valores a los parámetros
             stmt.setString(3, item.getName());
             stmt.setBoolean(4, item.isEnabled());
             stmt.setBoolean(5, item.isAvailable());
@@ -46,20 +44,10 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
     @Override
     public List<Item> showData() {
         System.out.println("Clues: \n");
-        showClue();
-    return null;
-    }
-
-
-
-    @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void remove() {
-
+        this.showClue();
+        System.out.println("Decoration objects: \n");
+        this.showDeco();
+        return null;
     }
 
     @Override
@@ -87,16 +75,15 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
             stmt.setString(2, deco.getMaterial().getMaterialName());
             stmt.executeUpdate();
             System.out.println("Decoration successfully created.");
-
         } catch (SQLException e) {
             System.out.println("Error inserting the decoration item to the database: " + e.getMessage());
         }
     }
 
     @Override
-    public List<Clue> showClueAvailable() {
+    public List<Clue> showClue() {
         List<Clue> clues = null;
-        String sql = "SELECT item.clue_id, item.name_item, item.price, clue.category FROM item INNER JOIN clue ON clue.id = item.clue_id WHERE item.available = 1 AND item.enabled = 1";
+        String sql = "SELECT item.clue_id, item.name_item, item.price, clue.category FROM item INNER JOIN clue ON clue.id = item.clue_id WHERE item.enabled = 1";
         ConnectionDB connection = new ConnectionDB();
         ResultSet rs = null;
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
@@ -118,11 +105,10 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
         return clues;
     }
 
-
     @Override
-    public List<Clue> showClue() {
+    public List<Clue> showClueAvailable() {
         List<Clue> clues = null;
-        String sql = "SELECT item.clue_id, item.name_item, item.price, clue.category FROM item INNER JOIN clue ON clue.id = item.clue_id WHERE item.enabled = 1";
+        String sql = "SELECT item.clue_id, item.name_item, item.price, clue.category FROM item INNER JOIN clue ON clue.id = item.clue_id WHERE item.available = 1 AND item.enabled = 1";
         ConnectionDB connection = new ConnectionDB();
         ResultSet rs = null;
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
@@ -169,7 +155,6 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
         return decos;
     }
 
-
     @Override
     public List<DecoItem> showDecoAvailable() {
         List<DecoItem> decos = null;
@@ -195,63 +180,18 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
         return decos;
     }
 
-    public Clue findClue() {
-        Clue clue = null;
-        String clueName = Helper.readString("Write the name of the clue: ");
-        String sql = "SELECT item.clue_id, item.name_item, item.price, clue.category FROM item INNER JOIN clue ON clue.id = item.clue_id WHERE item.enabled = 1 AND item.name_item = ?";
-
-        try (Connection conn = this.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, clueName);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    clue = new Clue();
-                    clue.setId(rs.getString("clue_id"));
-                    clue.setName(rs.getString("name_item"));
-                    clue.setPrice(rs.getDouble("price"));
-                    clue.setCategory(Category.valueOf(rs.getString("category").toUpperCase()));
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Error finding customer: " + e.getMessage());
-        }
-        return clue;
-    }
-
-    public DecoItem findDeco(){
-        String decoName = Helper.readString("Write down the name of the decoration item:");
-        String sql = "SELECT item.deco_id, item.name_item, item.price, deco.material FROM item INNER JOIN deco ON deco.id = item.deco_id WHERE item.enabled = 1 AND item.name_item = ?";
-        ConnectionDB connection = new ConnectionDB();
-        DecoItem newDeco = null;
-
-        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
-            stmt.setString(1, decoName);
-            ResultSet rs = stmt.executeQuery();
-
-            while(rs.next()){
-                newDeco = new DecoItem();
-                newDeco.setId(rs.getString("deco_id"));
-                newDeco.setName(rs.getString("name_item"));
-                newDeco.setPrice(rs.getDouble("price"));
-                newDeco.setMaterial(Material.valueOf(rs.getString("material").toUpperCase()));
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error extracting the data: " + e.getMessage());
-        }
-        return newDeco;
-    }
+    @Override
     public void addClueToRoom(Room room, Clue clue){
         ConnectionDB connection = new ConnectionDB();
         String sql = "UPDATE item SET item.room_id = ?, available = ? WHERE clue_id = ? AND available = 1";
         String sql2 = "UPDATE room SET room.price = ? WHERE room.id = ? AND enabled = 1";
-        //intentar agafar el id de la clue insertada per consola i buscarla pel seu id.
+
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
             stmt.setString(1, room.getId());
             stmt.setBoolean(2, false);
             stmt.setString(3, clue.getId());
             stmt.executeUpdate();
-            System.out.println("Clue successfully updated.");
+            System.out.println("Clue successfully added.");
 
         } catch (SQLException e) {
             System.out.println("Error updating the clue item in the database: " + e.getMessage());
@@ -260,13 +200,13 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
             stmt.setDouble(1, clue.getPrice() + room.getPrice());
             stmt.setString(2, room.getId());
             stmt.executeUpdate();
-            System.out.println("Room price successfully updated.");
 
         }catch (SQLException e) {
             System.out.println("Error updating the price room in the database: " + e.getMessage());
         }
     }
 
+    @Override
     public void addDecoToRoom(Room room, DecoItem deco){
         ConnectionDB connection = new ConnectionDB();
         String sql = "UPDATE item SET item.room_id = ?, available = ? WHERE deco_id = ? AND available = 1";
@@ -276,7 +216,7 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
             stmt.setBoolean(2, false);
             stmt.setString(3, deco.getId());
             stmt.executeUpdate();
-            System.out.println("Decoration item successfully updated.");
+            System.out.println("Decoration item successfully added.");
 
         } catch (SQLException e) {
             System.out.println("Error updating the decoration item in the database: " + e.getMessage());
@@ -285,7 +225,6 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
             stmt.setDouble(1, deco.getPrice() + room.getPrice());
             stmt.setString(2, room.getId());
             stmt.executeUpdate();
-            System.out.println("Room price successfully updated.");
 
         }catch (SQLException e) {
             System.out.println("Error updating the price room in the database: " + e.getMessage());
@@ -327,9 +266,58 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
             System.out.println("Error removing the decoration item from the database: " + e.getMessage());
         }
     }
-    @Override
-    public void addToRoom() throws NoRoomsException {
 
+    @Override
+    public Clue findClue() throws NoCluesException {
+        Clue clue = null;
+        String clueName = Helper.readString("Write the name of the clue: ");
+        String sql = "SELECT item.clue_id, item.name_item, item.price, clue.category FROM item INNER JOIN clue ON clue.id = item.clue_id WHERE item.enabled = 1 AND item.name_item = ?";
+
+        try (Connection conn = this.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, clueName);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    clue = new Clue();
+                    clue.setId(rs.getString("clue_id"));
+                    clue.setName(rs.getString("name_item"));
+                    clue.setPrice(rs.getDouble("price"));
+                    clue.setCategory(Category.valueOf(rs.getString("category").toUpperCase()));
+                } else if(!rs.next()) {
+                throw new NoCluesException("Error. Clue not found. Please, try again.");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error finding customer: " + e.getMessage());
+        }
+        return clue;
+    }
+
+    @Override
+    public DecoItem findDeco() throws NoDecoItemsException {
+        String decoName = Helper.readString("Write down the name of the decoration item:");
+        String sql = "SELECT item.deco_id, item.name_item, item.price, deco.material FROM item INNER JOIN deco ON deco.id = item.deco_id WHERE item.enabled = 1 AND item.name_item = ?";
+        ConnectionDB connection = new ConnectionDB();
+        DecoItem newDeco = null;
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
+            stmt.setString(1, decoName);
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()){
+                newDeco = new DecoItem();
+                newDeco.setId(rs.getString("deco_id"));
+                newDeco.setName(rs.getString("name_item"));
+                newDeco.setPrice(rs.getDouble("price"));
+                newDeco.setMaterial(Material.valueOf(rs.getString("material").toUpperCase()));
+            } else if(!rs.next()) {
+                throw new NoDecoItemsException("Error. Decoration object not found. Please, try again.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error extracting the data: " + e.getMessage());
+        }
+        return newDeco;
     }
 
 }

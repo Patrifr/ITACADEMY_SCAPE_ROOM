@@ -17,8 +17,8 @@ public abstract class Item {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.price = price;
-        this.enabled = true; //comença true per defecte
-        this.available = true; //comença true per defecte
+        this.enabled = true;
+        this.available = true;
     }
 
     public String getId() {
@@ -60,9 +60,5 @@ public abstract class Item {
     public void setAvailable(boolean available) {
         this.available = available;
     }
-
-    /*public abstract void commonMethod();*/
-
-
 
 }

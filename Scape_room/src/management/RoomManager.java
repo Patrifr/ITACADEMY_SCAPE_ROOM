@@ -11,7 +11,7 @@ import java.util.List;
 public class RoomManager {
 
     private static RoomManager instance;
-    private DAORoomImpl daoRoom;
+    private final DAORoomImpl daoRoom;
 
     private RoomManager() {
         this.daoRoom = new DAORoomImpl();
@@ -24,7 +24,6 @@ public class RoomManager {
         return instance;
     }
 
-
     public void createRoom() {
         String name = "", completionTime = "", id = "";
         double price = 0d;
@@ -35,20 +34,31 @@ public class RoomManager {
 
         name = Helper.readString("Introduce the name of the room:");
         price = Helper.readDouble("Introduce the price of the room:");
-        level = Helper.readInt("Choose the difficulty: 1, 2 or 3");
-        chosenLevel = Level.findByValue(level);
-        theme = Helper.readInt("Choose a main theme for the room:\n"
-                + "1. Adventure"
-                + "\n2. Mystery"
-                + "\n3. Humour"
-                + "\n4. History"
-                + "\n5. Science");
-        chosenTheme = Theme.findByValue(theme);
+        do {
+            level = Helper.readInt("Choose the difficulty: 1, 2 or 3");
+            if(level < 1 || level > 3) {
+                System.out.println("Please, choose a valid option: 1, 2, 3.");
+            } else {
+                chosenLevel = Level.findByValue(level);
+            }
+        } while(level < 1 || level > 3);
+        do {
+            theme = Helper.readInt("Choose a main theme for the room:\n"
+                    + "1. Adventure"
+                    + "\n2. Mystery"
+                    + "\n3. Humour"
+                    + "\n4. History"
+                    + "\n5. Science");
+            if(theme < 1 || theme > 5) {
+                System.out.println("Please, choose a valid option: 1, 2, 3, 4, 5.");
+            } else {
+                chosenTheme = Theme.findByValue(theme);
+            }
+        } while(theme < 1 || theme > 5);
         completionTime = Helper.readString("Introduce the completion time of this room:");
         newRoom = new Room(name, price, chosenLevel, chosenTheme, completionTime);
 
         this.daoRoom.add(newRoom);
-
     }
 
     public void showRoomsWithPrice() throws NoRoomsException {

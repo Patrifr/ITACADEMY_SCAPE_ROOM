@@ -1,7 +1,5 @@
 package classes;
 
-import classes.customer.Customer;
-
 import java.util.UUID;
 
 public class Invoice {
@@ -10,7 +8,6 @@ public class Invoice {
     private double priceRooms;
     private double IVA = 0.21;
     private double totalPrice;
-
 
     public Invoice(String customerID, double priceRooms) {
         this.id = UUID.randomUUID().toString();
@@ -46,8 +43,8 @@ public class Invoice {
     }
 
     private double calculateTotalPrice() {
-        this.totalPrice = priceRooms + (priceRooms * IVA);
-        return totalPrice;
+        this.totalPrice = this.priceRooms + (this.priceRooms * this.IVA);
+        return this.totalPrice;
     }
 
     public String getCustomerId() {
