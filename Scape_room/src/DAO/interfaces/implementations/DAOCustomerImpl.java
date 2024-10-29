@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
@@ -16,22 +17,20 @@ public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
     @Override
     public void add(Customer newCustomer) {
         ConnectionDB connection = new ConnectionDB();
-        String sql = "INSERT INTO customer (id, customer_name, email, phone) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO customer (id, customer_name, customer_surname, email, phone) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
             // Asignar valores a los parámetros
             stmt.setString(1,newCustomer.getId());
             stmt.setString(2, newCustomer.getName());
-            stmt.setString(3, newCustomer.getEmail());
-            stmt.setString(4,newCustomer.getPhoneNumber());
+            stmt.setString(3, newCustomer.getSurname());
+            stmt.setString(4, newCustomer.getEmail());
+            stmt.setString(5,newCustomer.getPhoneNumber());
             stmt.executeUpdate();
             System.out.println("Customer successfully created.");
         } catch (SQLException e) {
             System.out.println("Error inserting the customer to the database: " + e.getMessage());
-        } /*finally {
-            connection.closeConnection();
-        }*/
-
+        }
     }
 
     @Override
@@ -47,32 +46,37 @@ public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
                 //Customer customer = new Customer();
                 String id = rs.getString("id");
                 String name = rs.getString("customer_name");
+                String surname = rs.getString("customer_surname");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
-                customers.add(new Customer(name, email, phone));
+                customers.add(new Customer(name, surname, email, phone));
             }
 
         } catch (SQLException e) {
             System.out.println("Error extracting the data: " + e.getMessage());
-        } /*finally {
-            connection.closeConnection();
-        }*/
+        }
         return customers;
 
     }
 
-    public Customer findCustomerByName(String name) {
+    @Override
+    public void update() {
+
+    }
+
+    public Customer findCustomerByEmail(String email) {
         Customer customer = null;
-        String sql = "SELECT id, customer_name, email, phone FROM customer WHERE customer_name = ?";
+        String sql = "SELECT id, customer_name, customer_surname, email, phone FROM customer WHERE email = ?";
 
         try (Connection conn = this.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, name);
+            stmt.setString(1, email);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     customer = new Customer();
                     customer.setId(rs.getString("id"));
                     customer.setName(rs.getString("customer_name"));
+                    customer.setSurname(rs.getString("customer_surname"));
                     customer.setEmail( rs.getString("email"));
                     customer.setPhoneNumber(rs.getString("phone"));
                 }
@@ -83,9 +87,29 @@ public class DAOCustomerImpl extends ConnectionDB implements CustomerDAO {
         return customer;
     }
 
-    @Override
-    public void update() {
-    //Si sobra tiempo modificar datos usuario
+    public void updateCustomer(String email, String fieldName, String newValue) {
+        List<String> allowedFields = Arrays.asList("customer_name", "customer_surname", "email", "phone");
+        if (!allowedFields.contains(fieldName)) {
+            throw new IllegalArgumentException("Invalid field name for update.");
+        }
+
+        String sql = "UPDATE customer SET " + fieldName + " = ? WHERE email = ?";
+
+        try (Connection conn = this.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, newValue);
+            stmt.setString(2, email);
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Customer updated successfully.");
+            } else {
+                System.out.println("No customer found with the given email.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error updating customer " + fieldName + ": " + e.getMessage());
+        }
     }
 
     @Override

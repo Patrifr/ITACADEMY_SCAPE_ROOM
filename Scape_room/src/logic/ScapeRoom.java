@@ -58,17 +58,13 @@ public class ScapeRoom {
 
     }
 
-    //MÉTODOS CUSTOMER
-
     public void newCustomer() { //CREAR CUSTOMER
         this.customerManager.createCustomer();
     }
 
-    public void customerMenu(){ //Mostrar customer + Menú gestió newsletter y gift
+    public void customerMenu(){
         this.customerManager.customerMenu();
     }
-
-    //MÉTODES INVOICE
 
     public void accountManagement(){
         this.invoiceManager.invoiceMenu();

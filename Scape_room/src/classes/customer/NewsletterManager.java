@@ -7,8 +7,6 @@ import java.util.List;
 public class NewsletterManager {
     private List<NewsletterObserver> subscribers = new ArrayList<>();
 
-
-    // Suscripció per nous customers
     public void subscribe(NewsletterObserver subscriber) {
         if (!subscribers.contains(subscriber)) {
             subscribers.add(subscriber);
@@ -19,7 +17,6 @@ public class NewsletterManager {
         }
     }
 
-    // Donar de baixa customer
     public void unsubscribe(NewsletterObserver subscriber) {
         if (subscribers.isEmpty()) {
             System.out.println("There's no customers subscribed to the newsletter.");
@@ -35,28 +32,12 @@ public class NewsletterManager {
         }
     }
 
-    // Enviar newsletter
     public void sendNewsletter(String content) {
-        System.out.println("Sending newsletter: " + content);
+        System.out.println("Sending newsletter: ");
         for (NewsletterObserver subscriber : subscribers) {
             subscriber.update(content);
         }
     }
-
-    // Métodes per notificar noticies concretes?
-    public void clueNews(String cluedetails) {
-        sendNewsletter("New clue added! : " + cluedetails);
-    }
-
-    public void roomNews(String roomName) {
-        sendNewsletter("There's a new escape room! : " + roomName + "!");
-    }
-
-    public void decoNews(String roomName) {
-        sendNewsletter("There's a new decoration in the escape room " + roomName + "!");
-    }
-
-
 }
 
 

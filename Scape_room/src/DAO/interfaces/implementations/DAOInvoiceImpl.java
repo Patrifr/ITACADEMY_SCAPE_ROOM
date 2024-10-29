@@ -14,11 +14,6 @@ import java.util.List;
 
 public class DAOInvoiceImpl extends ConnectionDB implements InvoiceDAO {
 
-    //a cadascun d'aquests mètodes es gestionen la connexió i els statements
-    //Recuperar precios Invoice = precio ganancias.
-    //Precio decoItem = 10€ (PRECIO ADICIONAL)
-    //Precio clues = 5€ (PRECIO ADICIONAL)
-
     @Override
     public void add(Invoice invoice) {
 
@@ -33,9 +28,7 @@ public class DAOInvoiceImpl extends ConnectionDB implements InvoiceDAO {
             System.out.println("Invoice successfully created.");
         } catch (SQLException e) {
             System.out.println("Error inserting the invoice to the database: " + e.getMessage());
-        } /*finally {
-            connection.closeConnection();
-        }*/
+        }
 
     }
 
@@ -48,7 +41,6 @@ public class DAOInvoiceImpl extends ConnectionDB implements InvoiceDAO {
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()) {
-                //Customer customer = new Customer();
                 String id = rs.getString("id");
                 String customerId = rs.getString("customer_id");
                 double totalPrice = rs.getDouble("total_price");
@@ -57,9 +49,7 @@ public class DAOInvoiceImpl extends ConnectionDB implements InvoiceDAO {
 
         } catch (SQLException e) {
             System.out.println("Error extracting the data: " + e.getMessage());
-        } /*finally {
-            connection.closeConnection();
-        }*/
+        }
         return invoices;
     }
 
