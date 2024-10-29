@@ -1,6 +1,5 @@
 package management;
 
-import DAO.ConnectionDB;
 import DAO.interfaces.implementations.DAOItemImpl;
 import DAO.interfaces.implementations.DAORoomImpl;
 import classes.*;
@@ -9,15 +8,11 @@ import classes.items.DecoItem;
 import classes.items.creator.ClueCreator;
 import classes.items.creator.DecoItemCreator;
 import exceptions.*;
-import utils.Helper;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 public class InventoryManager {
 
-    //singleton
     private static InventoryManager instance;
     private DAOItemImpl daoItem;
     private DAORoomImpl daoRoom;
@@ -26,7 +21,7 @@ public class InventoryManager {
     private InventoryManager() {
         this.daoItem = new DAOItemImpl();
         this.daoRoom = new DAORoomImpl();
-    } //com que està buit, si cal s'elimina
+    }
 
     public static InventoryManager getInstance() {
         if (instance == null) {
@@ -39,7 +34,6 @@ public class InventoryManager {
         Clue newClue = (Clue) clueCreator.createItem();
         this.daoItem.addClue(newClue);
         this.daoItem.add(newClue);
-        //hem creat nova clue amb el ceator, s'afegeix a la sql clues i a la taula items a posteriori.
     }
     public void createDeco(){
         DecoItemCreator decoItemCreator = new DecoItemCreator();
@@ -163,66 +157,3 @@ public class InventoryManager {
         }
     }
 }
-
-
-    /*public void removeClue(Clue clue){
-        ConnectionDB connection = new ConnectionDB();
-        String sql = "UPDATE item SET item.room_id = null, available = ?, enable = ? WHERE clue_id = ?";
-
-        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
-            stmt.setBoolean(1, false);
-            stmt.setBoolean(2, false);
-            stmt.setString(3, clue_id);
-            stmt.executeUpdate();
-            System.out.println("Clue removed successfully.");
-
-        }catch (SQLException e) {
-            System.out.println("Error removing the clue item from the database: " + e.getMessage());
-        }
-    }*/
-
-   /*public Item addClueToRoom() throws NoRoomsException, NoCluesException {
-        DAOItemImpl daoItem = new DAOItemImpl();
-        //Mostrem les clues.
-        showClues();
-        String clue_name = Helper.readString("Write down the name of the clue:");
-
-        //Busquem la clue pel name i ens retorna una clue.
-        daoItem.findClue();
-
-        //Busquem la room pel name i ens retorna l'id.
-        DAORoomImpl daoRoom = new DAORoomImpl();
-        RoomManager roomManager = RoomManager.getInstance();
-        roomManager.showRooms();
-        String roomId = daoRoom.findRoom();
-
-        String sql = "UPDATE item SET room_id = ? WHERE name_item = ?";
-
-        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
-            stmt.setString(1, roomId);
-            stmt.setString(2, clue_name);
-            stmt.executeUpdate();
-            System.out.println("Clue successfully updated.");
-
-        } catch (SQLException e) {
-            System.out.println("Error updating the clue item in the database: " + e.getMessage());
-        }
-        return foundClue;
-    }
-
-    public void addToRoomMenu() throws NoCluesException, NoRoomsException {
-        int opt;
-        DAOItemImpl daoItem = new DAOItemImpl();
-        do{
-            opt = Helper.readInt("Which item do you want to add to a room:\n" +
-                    "1. Clue.\n" +
-                    "2. Decoration item.\n" +
-                    "0. Exit");
-            switch (opt){
-                case 1:
-                addClueToRoom();
-               // daoItem.updateAvailable(addClueToRoom());
-                    break;
-            }
-        }while(opt != 0);
-    }*/

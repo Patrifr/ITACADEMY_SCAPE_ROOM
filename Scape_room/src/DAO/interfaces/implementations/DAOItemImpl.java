@@ -18,7 +18,6 @@ import java.util.List;
 
 
 public class DAOItemImpl extends ConnectionDB implements ItemDAO {
-    //a cadascun d'aquests mètodes es gestionen la connexió i els statements
 
     @Override
     public void add(Item item) {
@@ -38,7 +37,6 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
                 stmt.setString(2, item.getId());
                 stmt.setString(1, null);
             }
-            // Ejecutar el comando SQL
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error inserting the item to the database: " + e.getMessage());
@@ -49,7 +47,6 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
     public List<Item> showData() {
         System.out.println("Clues: \n");
         showClue();
-        //Diferenciar el tipus d'item a l'hora de mostrar-lo
     return null;
     }
 
@@ -71,7 +68,6 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
         ConnectionDB connection = new ConnectionDB();
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
-            // Asignar valores a los parámetros
             stmt.setString(1, clue.getId());
             stmt.setString(2, clue.getCategory().getCategoryName());
             stmt.executeUpdate();
@@ -87,7 +83,6 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
         ConnectionDB connection = new ConnectionDB();
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
-            // Asignar valores a los parámetros
             stmt.setString(1, deco.getId());
             stmt.setString(2, deco.getMaterial().getMaterialName());
             stmt.executeUpdate();
@@ -249,6 +244,7 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
     public void addClueToRoom(Room room, Clue clue){
         ConnectionDB connection = new ConnectionDB();
         String sql = "UPDATE item SET item.room_id = ?, available = ? WHERE clue_id = ? AND available = 1";
+        String sql2 = "UPDATE room SET room.price = ? WHERE room.id = ? AND enabled = 1";
         //intentar agafar el id de la clue insertada per consola i buscarla pel seu id.
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
             stmt.setString(1, room.getId());
@@ -260,12 +256,21 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
         } catch (SQLException e) {
             System.out.println("Error updating the clue item in the database: " + e.getMessage());
         }
+        try(PreparedStatement stmt = connection.getConnection().prepareStatement(sql2)){
+            stmt.setDouble(1, clue.getPrice() + room.getPrice());
+            stmt.setString(2, room.getId());
+            stmt.executeUpdate();
+            System.out.println("Room price successfully updated.");
+
+        }catch (SQLException e) {
+            System.out.println("Error updating the price room in the database: " + e.getMessage());
+        }
     }
 
     public void addDecoToRoom(Room room, DecoItem deco){
         ConnectionDB connection = new ConnectionDB();
         String sql = "UPDATE item SET item.room_id = ?, available = ? WHERE deco_id = ? AND available = 1";
-
+        String sql2 = "UPDATE room SET room.price = ? WHERE room.id = ? AND enabled = 1";
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
             stmt.setString(1, room.getId());
             stmt.setBoolean(2, false);
@@ -275,6 +280,15 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
 
         } catch (SQLException e) {
             System.out.println("Error updating the decoration item in the database: " + e.getMessage());
+        }
+        try(PreparedStatement stmt = connection.getConnection().prepareStatement(sql2)){
+            stmt.setDouble(1, deco.getPrice() + room.getPrice());
+            stmt.setString(2, room.getId());
+            stmt.executeUpdate();
+            System.out.println("Room price successfully updated.");
+
+        }catch (SQLException e) {
+            System.out.println("Error updating the price room in the database: " + e.getMessage());
         }
     }
     public void removeClue(Clue clue){
@@ -312,11 +326,6 @@ public class DAOItemImpl extends ConnectionDB implements ItemDAO {
     @Override
     public void addToRoom() throws NoRoomsException {
 
-        //Mostrar per consola les clues
-        //agafar la clue que vol pel nom
-        //Mostrar la llista de rooms
-        //adafar el nom de la room
-        //insertar el room_id en la clue.room_id
     }
 
 }

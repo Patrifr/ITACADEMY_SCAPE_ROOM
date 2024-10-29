@@ -3,8 +3,6 @@ package DAO.interfaces.implementations;
 import DAO.ConnectionDB;
 import DAO.interfaces.RoomDAO;
 import classes.Room;
-import classes.customer.Customer;
-import classes.items.Clue;
 import enums.Level;
 import enums.Theme;
 import exceptions.NoRoomsException;
@@ -16,7 +14,6 @@ import java.util.List;
 
 public class DAORoomImpl extends ConnectionDB implements RoomDAO {
 
-    //a cadascun d'aquests mètodes es gestionen la connexió i els statements
     @Override
     public Room findRoom() throws NoRoomsException {
         ConnectionDB connection = new ConnectionDB();
@@ -53,7 +50,6 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
         String sql = "INSERT INTO room (id, room_name, complete_time, lvl, theme, price, enabled, escape_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)){
-            // Asignar valores a los parámetros
             stmt.setString(1, newRoom.getId());
             stmt.setString(2, newRoom.getName());
             stmt.setString(3, newRoom.getCompletionTime());
@@ -91,9 +87,7 @@ public class DAORoomImpl extends ConnectionDB implements RoomDAO {
 
         } catch (SQLException e) {
             System.out.println("Error extracting the data: " + e.getMessage());
-        } /*finally {
-            connection.closeConnection();
-        }*/
+        }
         return rooms;
 
     }
