@@ -11,7 +11,7 @@ public class Invoice {
     private double IVA = 0.21;
     private double totalPrice;
 
-    // Constructor que recibe el ID y el cliente
+
     public Invoice(String customerID, double priceRooms) {
         this.id = UUID.randomUUID().toString();
         this.customerId = customerID;
@@ -45,7 +45,6 @@ public class Invoice {
         return totalPrice;
     }
 
-    // Método para calcular el precio total con IVA
     private double calculateTotalPrice() {
         this.totalPrice = priceRooms + (priceRooms * IVA);
         return totalPrice;
@@ -61,8 +60,7 @@ public class Invoice {
 
     @Override
     public String toString() {
-        return "Invoice ticket: \n" +
-                "Invoice id: " + id + '\n' +
+        return "Invoice id nº: " + id + '\n' +
                 "Escape room price: " + priceRooms + '\n' +
                 "IVA: " + IVA + '\n' +
                 "Total price: " + totalPrice;

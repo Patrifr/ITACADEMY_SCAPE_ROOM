@@ -6,6 +6,7 @@ import enums.Theme;
 
 public interface CustomerDAO extends DAO<Customer> {
 
-    //aquí mètodes específics que només afectin Customer
-    
+    Customer findCustomerByEmail(String email);
+    void updateCustomer(String email, String fieldName, String newValue);
+
 }

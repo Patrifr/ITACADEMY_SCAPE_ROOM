@@ -7,6 +7,7 @@ public class Customer implements NewsletterObserver {
 
     private String id;
     private String name;
+    private String surname;
     private String email;
     private String phoneNumber;
     private String gifts;
@@ -17,9 +18,10 @@ public class Customer implements NewsletterObserver {
 
     }
 
-    public Customer(String name, String email, String phoneNumber) {
+    public Customer(String name, String surname, String email, String phoneNumber) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
+        this.surname = surname;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
@@ -38,6 +40,14 @@ public class Customer implements NewsletterObserver {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getEmail() {
@@ -65,7 +75,7 @@ public class Customer implements NewsletterObserver {
     }
 
     public String getGifts() {
-        return "The customer recive a " + gifts + " as a gift!";
+        return "The customer receive a " + gifts + " as a gift!";
     }
 
     public void setGifts(String gifts) {
@@ -81,13 +91,13 @@ public class Customer implements NewsletterObserver {
     @Override
     public String toString() {
         return "Customer{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", gifts=" + gifts +
-                ", certificate='" + certificate + '\'' +
-                '}';
+                "Id: " + id + '\'' +
+                "Name: " + name + '\'' +
+                "Surname: " + surname +
+                "Email: " + email + '\'' +
+                "Phone Number: " + phoneNumber + '\'' +
+                "Gifts " + gifts +
+                "Certificate: " + certificate;
     }
 
 
