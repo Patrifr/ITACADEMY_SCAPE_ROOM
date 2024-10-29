@@ -2,7 +2,6 @@ package utils;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Helper {
@@ -69,7 +68,6 @@ public class Helper {
     }
 
     public static double readDouble(String message) {
-        //falta comprovar que el preu no sigui negatiu...
         double data = 0d;
         boolean dataOk = false;
 
