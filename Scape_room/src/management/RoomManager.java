@@ -2,9 +2,7 @@ package management;
 
 import DAO.interfaces.implementations.DAORoomImpl;
 import classes.Room;
-import classes.items.Clue;
 import enums.*;
-import exceptions.NoCluesException;
 import exceptions.NoRoomsException;
 import utils.Helper;
 
@@ -12,7 +10,6 @@ import java.util.List;
 
 public class RoomManager {
 
-    //singleton
     private static RoomManager instance;
     private DAORoomImpl daoRoom;
 
@@ -35,7 +32,6 @@ public class RoomManager {
         Level chosenLevel = null;
         Theme chosenTheme = null;
         Room newRoom = null;
-        //cal tota la prèvia???
 
         name = Helper.readString("Introduce the name of the room:");
         price = Helper.readDouble("Introduce the price of the room:");
