@@ -1,65 +1,94 @@
 package classes;
 
 import enums.Level;
-
-import java.util.ArrayList;
+import enums.Theme;
+import java.util.UUID;
 
 public class Room {
 
-    private int roomId;
-    private static int idIncrement = 1;
+    private String id;
     private String name;
+    private double price;
     private Level level;
-    private double totalPrice;
-    private ArrayList<Clue> clues;
-    private ArrayList<DecorationItem> decorationItems;
+    private Theme theme;
+    private String completionTime;
+    private boolean enabled;
 
-    public Room(String name, Level level) {
-        this.roomId = Room.idIncrement;
-        Room.idIncrement++;
-        this.name = name;
-        this.level = level;
-        this.totalPrice = 100;
-        this.clues = new ArrayList<Clue>();
-        this.decorationItems = new ArrayList<DecorationItem>();
+    public Room() {
     }
 
-    public int getRoomId() {
-        return this.roomId;
+    public Room(String name, double price, Level level, Theme theme, String completionTime) {
+        this.id = UUID.randomUUID().toString();
+        this.name = name;
+        this.price = price;
+        this.level = level;
+        this.theme = theme;
+        this.completionTime = completionTime;
+        this.enabled = true;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {
-        return this.name;
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public Theme getTheme() {
+        return theme;
+    }
+
+    public String getCompletionTime() {
+        return completionTime;
     }
 
     public Level getLevel() {
         return this.level;
     }
 
-    public double getTotalPrice() {
-        return this.totalPrice;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public ArrayList<Clue> getClues() {
-        return this.clues;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public ArrayList<DecorationItem> getDecorationItems() {
-        return this.decorationItems;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public void setTheme(Theme theme) {
+        this.theme = theme;
+    }
+
+    public void setCompletionTime(String completionTime) {
+        this.completionTime = completionTime;
     }
 
     @Override
     public String toString() {
         return "Room{" +
-                "roomId=" + roomId +
-                ", name='" + name + '\'' +
-                ", level=" + level +
-                ", totalPrice=" + totalPrice +
+                "level=" + level +
+                ", theme=" + theme +
+                ", completionTime='" + completionTime + '\'' +
                 '}';
     }
-
 }

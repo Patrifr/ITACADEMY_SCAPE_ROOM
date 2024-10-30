@@ -2,9 +2,9 @@ package enums;
 
 public enum Level {
 
-    BEGINNER(1, "beginner"),
-    INTERMEDIATE(2, "intermediate"),
-    EXPERT(3, "expert");
+    BEGINNER(1, "Beginner"),
+    INTERMEDIATE(2, "Intermediate"),
+    EXPERT(3, "Expert");
 
     private final int VALUE;
     private String levelName;
@@ -14,7 +14,7 @@ public enum Level {
         this.levelName = levelName;
     }
 
-    public int getValue() {
+    public int getVALUE() {
         return VALUE;
     }
 
@@ -24,7 +24,7 @@ public enum Level {
 
     public static Level findByValue(int value) {
         for (Level level : values()) {
-            if (level.getValue() == value) {
+            if (level.getVALUE() == value) {
                 return level;
             }
         }
