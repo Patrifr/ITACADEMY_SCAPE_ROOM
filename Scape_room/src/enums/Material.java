@@ -2,18 +2,34 @@ package enums;
 
 public enum Material {
 
-    WOOD("wood"),
-    GLASS("glass"),
-    PLASTIC("plastic"),
-    METAL("metal");
+    WOOD(1, "wood"),
+    GLASS(2, "glass"),
+    PLASTIC(3, "plastic"),
+    METAL(4, "metal");
 
+    private final int VALUE;
     private String name;
 
-    private Material(String name) {
+    private Material(int VALUE, String name) {
+        this.VALUE = VALUE;
         this.name = name;
     }
 
-    public String getName() {
+    public int getVALUE() {
+        return VALUE;
+    }
+
+    public String getMaterialName() {
         return name;
     }
+
+    public static Material findByValue(int value) {
+        for (Material material : values()) {
+            if (material.getVALUE() == value) {
+                return material;
+            }
+        }
+        return null;
+    }
+
 }
